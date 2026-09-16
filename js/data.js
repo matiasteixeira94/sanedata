@@ -105,3 +105,11 @@ function indiceCompletoCache(ano, peso){
 }
 
 function round1(n){ return Math.round(n*10)/10; }
+
+/* limpa os caches de município/ano e de índice composto — necessário antes de recarregar
+   PAINEL (botão "Atualizar dados"), já que esses caches assumem que os dados não mudam
+   durante a sessão (ver comentários em getDataset/indiceCompletoCache acima). */
+function limparCachesPainel(){
+  _cacheDataset.clear();
+  _cacheIndice.clear();
+}

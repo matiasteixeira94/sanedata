@@ -185,6 +185,62 @@ document.getElementById('btnExportPNG').addEventListener('click', ()=>{
 });
 document.getElementById('btnImprimir').addEventListener('click', ()=> window.print());
 
+/* ============ ATUALIZAR DADOS (botão na Tela Inicial) ============
+   Reforça a busca de data/processed/painel_pe.json (+ malha geográfica e pontos de
+   atenção) e re-renderiza Dashboard, Relatórios e Comparações com o resultado — mesmo
+   estando na Tela Inicial no momento do clique, já que é daqui que o usuário dispara a
+   atualização das outras telas. Mantém o ano e os municípios selecionados quando eles
+   ainda existirem no dado recarregado; cai pro padrão quando não existirem mais. */
+function municipioPorCodigo(data, codigo){
+  const i = data.findIndex(m => m.codigo === codigo);
+  return i === -1 ? 0 : i;
+}
+
+const btnAtualizarDados = document.getElementById('btnAtualizarDados');
+const heroAtualizarStatus = document.getElementById('heroAtualizarStatus');
+
+btnAtualizarDados.addEventListener('click', async ()=>{
+  const dataAntiga = getDataset(state.ano);
+  const anoAnterior = state.ano;
+  const codigoMunicipioAnterior = dataAntiga[state.municipioIdx]?.codigo;
+  const codigoCompAAnterior = dataAntiga[state.compA]?.codigo;
+  const codigoCompBAnterior = dataAntiga[state.compB]?.codigo;
+
+  btnAtualizarDados.disabled = true;
+  const textoOriginal = btnAtualizarDados.textContent;
+  btnAtualizarDados.textContent = '🔄 Atualizando...';
+  heroAtualizarStatus.textContent = '';
+
+  try{
+    limparCachesPainel();
+    await carregarPainel(); // já define state.ano = anoPadrao()
+    try{ await carregarMalha(); malhaErro = null; } catch(erro){ malhaErro = erro; }
+    await carregarPontosAtencao();
+
+    const anos = anosDisponiveis();
+    state.ano = anos.includes(anoAnterior) ? anoAnterior : anoPadrao();
+    popularSelectAnos();
+    clear2(document.getElementById('dlMunicipiosPE')); // recarrega a lista — pode ter mudado no dado novo
+    const dataNova = getDataset(state.ano);
+    state.municipioIdx = municipioPorCodigo(dataNova, codigoMunicipioAnterior);
+    state.compA = municipioPorCodigo(dataNova, codigoCompAAnterior);
+    state.compB = municipioPorCodigo(dataNova, codigoCompBAnterior);
+    popularSelectMunicipios(dataNova);
+
+    renderDashboard();
+    renderRelatorios();
+    renderComparacoes();
+
+    const agora = new Date().toLocaleTimeString('pt-BR');
+    heroAtualizarStatus.textContent = `Dados atualizados às ${agora} — Dashboard, Relatórios e Comparações recarregados.`;
+  } catch(erro){
+    heroAtualizarStatus.textContent = `Falha ao atualizar os dados (${erro.message}).`;
+  } finally{
+    btnAtualizarDados.disabled = false;
+    btnAtualizarDados.textContent = textoOriginal;
+  }
+});
+
 /* ============ INIT ============ */
 function popularSelectAnos(){
   const sel = document.getElementById('selAno');
