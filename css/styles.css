@@ -45,8 +45,10 @@ html[data-theme="dark"]{
 /* rede de segurança contra overflow horizontal — sem height:100%, que travava o scroll vertical
    (overflow-x diferente de visible força overflow-y a virar auto por spec; com altura fixa em
    100%, o body virava um scroller interno de 844px e o scroll da página real parava de funcionar). */
-html{ overflow-x:hidden; }
-body{ overflow-x:hidden; }
+/* clip (e não hidden): hidden transforma html/body em contêiner de rolagem e quebra o
+   position:sticky da barra superior, da lateral e das abas do Dashboard */
+html{ overflow-x:clip; }
+body{ overflow-x:clip; }
 body{
   margin:0; background:var(--bg); color:var(--text);
   font-family:var(--font-body); font-size:15px; line-height:1.5;
@@ -448,7 +450,7 @@ html[data-theme="dark"] .sidebar{ background:#180208; }
 /* ============ ABAS (Dashboard) ============ */
 .abas{
   display:flex; gap:4px; border-bottom:2px solid var(--border); margin:4px 0 20px; overflow-x:auto;
-  position:sticky; top:77px; z-index:4; background:var(--bg); padding-top:6px;
+  position:sticky; top:var(--altura-topbar, 77px); z-index:4; background:var(--bg); padding-top:6px;
 }
 .aba{
   background:none; border:none; border-bottom:3px solid transparent; margin-bottom:-2px;

@@ -289,6 +289,13 @@ ligarBuscaMunicipio(document.getElementById('selCompB'), (m, data)=>{
   renderComparacoes();
 });
 
+/* altura real da barra superior (muda quando os filtros quebram linha) — as abas do
+   Dashboard grudam logo abaixo dela ao rolar */
+if(window.ResizeObserver){
+  new ResizeObserver(([e]) => document.documentElement.style.setProperty('--altura-topbar', e.target.offsetHeight + 'px'))
+    .observe(document.querySelector('.topbar'));
+}
+
 /* ============ ABAS DO DASHBOARD ============
    Só escondem/mostram blocos — tudo continua sendo calculado no renderDashboard, então
    trocar de aba é instantâneo e um filtro aplicado numa aba vale ao voltar para ela.

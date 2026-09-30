@@ -83,7 +83,7 @@ function exportarImagemSVG(svgId, nomeArquivo){
    Tabelas diferentes no mesmo arquivo ficam separadas por uma linha com o título delas. */
 function exportarTabelasCSV(tabelas, nomeArquivo){
   const celula = (td) => {
-    const txt = td.innerText.replace(/\s+/g,' ').trim();
+    const txt = td.textContent.replace(/\s+/g,' ').trim(); // textContent: innerText aplicaria o text-transform (cabeçalho em CAIXA ALTA)
     if(txt === '—') return '';
     return /[;"\n]/.test(txt) ? `"${txt.replace(/"/g,'""')}"` : txt;
   };
