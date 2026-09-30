@@ -428,9 +428,15 @@
       <div class="cards-row" id="cardsInicio"></div>
 
       <div class="panel panel-wide">
-        <h2>Evolução do índice ao longo dos anos <span class="hint" id="temporalHint"></span></h2>
+        <div class="panel-titulo">
+          <h2>Evolução do índice ao longo dos anos <span class="hint" id="temporalHint"></span></h2>
+          <div class="pills" id="pillsRegua" role="group" aria-label="Régua de normalização do índice">
+            <button class="pill active" type="button" data-regua="ano">Régua de cada ano (posição relativa)</button>
+            <button class="pill" type="button" data-regua="fixa">Régua fixa da série (comparável)</button>
+          </div>
+        </div>
         <svg id="chartIndiceTemporal" viewBox="0 0 900 220" role="img" aria-label="Gráfico de linha mostrando a evolução do índice de priorização do município selecionado e da média do painel ao longo dos anos"></svg>
-        <p class="scope-note">Este gráfico sempre usa pesos iguais (20% cada indicador), independente do esquema escolhido acima — é uma simplificação pra manter a série temporal consistente. O índice não é uma régua absoluta comparável entre anos: cada ano é normalizado (mínimo/máximo) só entre os municípios com os 5 indicadores completos <em>naquele</em> ano, então o valor de um ano reflete a posição relativa dentro do grupo de comparação daquele ano, não uma nota fixa — e esse grupo de comparação muda de tamanho de ano pra ano. Vãos na linha são anos sem municípios suficientes com dado completo (não interpolados nem tratados como zero).</p>
+        <p class="scope-note" id="notaRegua"></p>
       </div>
 
       <div class="panel panel-wide">
@@ -490,6 +496,9 @@
         <div class="field">
           <label for="selSerieIndicador">Indicador</label>
           <select id="selSerieIndicador">
+            <optgroup label="Índice">
+              <option value="indiceReguaFixa">Índice de priorização (régua fixa, comparável entre anos)</option>
+            </optgroup>
             <optgroup label="Saneamento — déficit (%)">
               <option value="deficitAgua">Déficit de água</option>
               <option value="deficitEsgoto">Déficit de esgoto</option>
@@ -515,7 +524,7 @@
         </div>
       </div>
 
-      <p class="scope-note">Esta tela usa a série inteira (não o ano do topo da página). A <strong>mediana</strong> é o valor do município "do meio" do estado — menos sensível a extremos que a média — e a <strong>faixa sombreada</strong> cobre os 50% centrais dos municípios (entre o 1º e o 3º quartil). Anos sem dado aparecem como vão na linha, nunca interpolados. O índice de priorização não aparece aqui de propósito: ele é normalizado dentro de cada ano, então não é comparável entre anos.</p>
+      <p class="scope-note">Esta tela usa a série inteira (não o ano do topo da página). A <strong>mediana</strong> é o valor do município "do meio" do estado — menos sensível a extremos que a média — e a <strong>faixa sombreada</strong> cobre os 50% centrais dos municípios (entre o 1º e o 3º quartil). Anos sem dado aparecem como vão na linha, nunca interpolados. O índice aparece aqui só na versão de <strong>régua fixa</strong> (mínimo/máximo da série inteira, pesos iguais) — a versão padrão é normalizada dentro de cada ano e não é comparável entre anos.</p>
 
       <div class="cards-row" id="cardsSeries"></div>
 

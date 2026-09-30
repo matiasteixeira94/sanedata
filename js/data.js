@@ -31,7 +31,7 @@ const LABELS = {
 const LABEL_PESO = { igual:"pesos iguais", entropia:"entropia de Shannon", pca:"PCA (1º componente)" };
 
 let PAINEL = null; // payload bruto de data/processed/painel_pe.json
-let state = { ano:null, indicador:"taxaDengue", componente:"deficitAgua", municipioIdx:0, peso:"igual", mapaCamada:"indice", compA:0, compB:1,
+let state = { reguaTemporal:'ano', ano:null, indicador:"taxaDengue", componente:"deficitAgua", municipioIdx:0, peso:"igual", mapaCamada:"indice", compA:0, compB:1,
   serieIndicador:"deficitAgua", serieDe:null, serieAte:null }; // serieDe/serieAte null = padrão calculado a partir da cobertura do indicador (ver js/series.js)
 
 /* ============ CARREGAMENTO DOS DADOS REAIS ============ */
@@ -105,6 +105,46 @@ function indiceCompletoCache(ano, peso){
   return resultado;
 }
 
+/* ============ ÍNDICE COM RÉGUA FIXA (comparável entre anos) ============
+   O índice padrão normaliza cada ano pelo mínimo/máximo DAQUELE ano — mede a posição
+   relativa, mas não diz se um município melhorou de fato. Esta variante normaliza todos
+   os anos pela mesma régua: mínimo/máximo de cada indicador em TODOS os pares
+   município×ano com os indicadores do índice completos, na série inteira. Assim, uma
+   queda no valor significa melhora real nos indicadores, não só mudança de posição.
+   Só pesos iguais: pesos de entropia/PCA são estimados ano a ano e quebrariam a
+   comparabilidade que é o objetivo aqui. */
+let _reguaFixa = null;
+function reguaFixaDaSerie(){
+  if(_reguaFixa) return _reguaFixa;
+  const todos = [];
+  for(let a = PAINEL.anoInicio; a <= PAINEL.anoFim; a++) todos.push(...indiceCompletoCache(a, 'igual').completos);
+  _reguaFixa = Object.fromEntries(INDICADORES_INDICE.map(k=>{
+    const vals = todos.map(m=>m[k]);
+    return [k, { min: vals.length ? Math.min(...vals) : 0, max: vals.length ? Math.max(...vals) : 1 }];
+  }));
+  return _reguaFixa;
+}
+const _cacheIndiceFixo = new Map();
+const _indiceFixoPorMunicipio = new Map(); // objeto município×ano (de getDataset) -> valor
+function indiceReguaFixaCache(ano){
+  const chave = String(ano);
+  if(_cacheIndiceFixo.has(chave)) return _cacheIndiceFixo.get(chave);
+  const { completos } = indiceCompletoCache(ano, 'igual');
+  const regua = reguaFixaDaSerie();
+  const idx = completos.map(m => 100 * INDICADORES_INDICE.reduce((s,k)=>{
+    const {min,max} = regua[k];
+    return s + (max>min ? (m[k]-min)/(max-min) : 0);
+  }, 0) / INDICADORES_INDICE.length);
+  completos.forEach((m,i) => _indiceFixoPorMunicipio.set(m, idx[i]));
+  const resultado = { completos, idx };
+  _cacheIndiceFixo.set(chave, resultado);
+  return resultado;
+}
+function indiceFixoDoMunicipio(m){
+  if(!_indiceFixoPorMunicipio.size && PAINEL) for(let a = PAINEL.anoInicio; a <= PAINEL.anoFim; a++) indiceReguaFixaCache(a);
+  return _indiceFixoPorMunicipio.has(m) ? _indiceFixoPorMunicipio.get(m) : null;
+}
+
 function round1(n){ return Math.round(n*10)/10; }
 
 /* limpa os caches de município/ano e de índice composto — necessário antes de recarregar
@@ -113,4 +153,7 @@ function round1(n){ return Math.round(n*10)/10; }
 function limparCachesPainel(){
   _cacheDataset.clear();
   _cacheIndice.clear();
+  _cacheIndiceFixo.clear();
+  _indiceFixoPorMunicipio.clear();
+  _reguaFixa = null;
 }

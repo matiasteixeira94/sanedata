@@ -248,6 +248,14 @@ ligarBuscaMunicipio(document.getElementById('selCompB'), (m, data)=>{
   renderComparacoes();
 });
 
+/* ============ RÉGUA DO GRÁFICO DE EVOLUÇÃO (Dashboard) ============ */
+document.getElementById('pillsRegua').addEventListener('click', (e)=>{
+  const btn = e.target.closest('[data-regua]');
+  if(!btn) return;
+  state.reguaTemporal = btn.dataset.regua;
+  renderInicio();
+});
+
 /* ============ FILTROS — SÉRIES HISTÓRICAS ============ */
 document.getElementById('selSerieIndicador').addEventListener('change', (e)=>{
   state.serieIndicador = e.target.value;

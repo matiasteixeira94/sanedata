@@ -10,14 +10,19 @@
    investimento do Dashboard: série ausente não entra como zero. */
 const CHAVE_INVESTIMENTO_TOTAL = 'investimentoTotalPer100k';
 LABELS[CHAVE_INVESTIMENTO_TOTAL] = 'Investimento em saneamento';
+/* índice de priorização na régua fixa da série (ver indiceReguaFixaCache em js/data.js) —
+   o único índice que faz sentido comparar entre anos */
+const CHAVE_INDICE_FIXO = 'indiceReguaFixa';
+LABELS[CHAVE_INDICE_FIXO] = 'Índice (régua fixa)';
 
-/* indicadores exibíveis nas telas de série — os 6 rastreados + investimento total */
-const INDICADORES_SERIE = [...TODOS_INDICADORES, CHAVE_INVESTIMENTO_TOTAL];
+/* indicadores exibíveis nas telas de série — índice comparável, os 6 rastreados e investimento total */
+const INDICADORES_SERIE = [CHAVE_INDICE_FIXO, ...TODOS_INDICADORES, CHAVE_INVESTIMENTO_TOTAL];
 
 const UNIDADE_INDICADOR = {
   deficitAgua:'%', deficitEsgoto:'%', deficitResiduos:'%',
   taxaDengue:'/100 mil hab.', taxaChikungunya:'/100 mil hab.', taxaDiarreia:'/100 mil hab.',
   [CHAVE_INVESTIMENTO_TOTAL]:'R$/100 mil hab.',
+  [CHAVE_INDICE_FIXO]:'/100',
 };
 /* em déficit e em taxa de doença, valor maior é pior; em investimento, maior é "mais investido"
    — define o que conta como melhora/piora nas listas de variação e na situação do Perfil. */
@@ -25,6 +30,7 @@ function maiorEhPior(chave){ return chave !== CHAVE_INVESTIMENTO_TOTAL; }
 
 function valorIndicador(m, chave){
   if(!m) return null;
+  if(chave === CHAVE_INDICE_FIXO) return indiceFixoDoMunicipio(m);
   if(chave === CHAVE_INVESTIMENTO_TOTAL){
     const vals = INDICADORES_INVESTIMENTO.map(k=>m[k]).filter(v=>v!==null && v!==undefined);
     return vals.length ? vals.reduce((a,b)=>a+b,0) : null;
@@ -37,6 +43,7 @@ function fmtIndicador(v, chave){
   if(v===null || v===undefined) return '—';
   if(chave === CHAVE_INVESTIMENTO_TOTAL) return 'R$ ' + fmtMoedaCompacta(v);
   if(UNIDADE_INDICADOR[chave] === '%') return fmt(v,1) + '%';
+  if(chave === CHAVE_INDICE_FIXO) return fmt(v,1);
   return fmt(v, v < 10 ? 1 : 0);
 }
 

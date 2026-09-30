@@ -27,7 +27,7 @@ function renderCoberturaDados(host){
   const anos = anosDaSerie();
   const total = getDataset(anos[0]).length || 1;
   const linhas = [
-    ...INDICADORES_SERIE.map(k=>({ rotulo:LABELS[k], contar: a => getDataset(a).filter(m=>valorIndicador(m,k)!==null).length })),
+    ...INDICADORES_SERIE.filter(k=>k!==CHAVE_INDICE_FIXO).map(k=>({ rotulo:LABELS[k], contar: a => getDataset(a).filter(m=>valorIndicador(m,k)!==null).length })),
     { rotulo:`Índice (${INDICADORES_INDICE.length} indicadores completos)`, contar: a => indiceCompletoCache(a,'igual').completos.length, destaque:true },
   ];
   host.innerHTML = `<thead><tr><th>Indicador</th>${anos.map(a=>`<th>${a}</th>`).join('')}</tr></thead><tbody>` +

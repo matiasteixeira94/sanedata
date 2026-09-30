@@ -74,7 +74,8 @@ function desenharIndiceTemporal(svg, codigoMunicipio, nomeMunicipio){
 
   const pontosMunicipio = [], pontosMedia = [];
   anos.forEach(a=>{
-    const { completos, idx } = indiceCompletoCache(a, "igual");
+    // régua fixa = mesma normalização em todos os anos (comparável); régua do ano = posição relativa
+    const { completos, idx } = state.reguaTemporal === 'fixa' ? indiceReguaFixaCache(a) : indiceCompletoCache(a, "igual");
     if(completos.length < 2){ pontosMunicipio.push(null); pontosMedia.push(null); return; }
     pontosMedia.push(idx.reduce((s,v)=>s+v,0)/idx.length);
     const pos = completos.findIndex(m=>m.codigo===codigoMunicipio);
@@ -105,11 +106,12 @@ function desenharIndiceTemporal(svg, codigoMunicipio, nomeMunicipio){
   });
 
   function desenharLinha(pontos, cor, rotulo){
-    let pathD = "", ultimo = null;
+    let pathD = "", ultimo = null, anteriorNulo = true;
     pontos.forEach((v,i)=>{
-      if(v===null) return;
+      if(v===null){ anteriorNulo = true; return; } // ano sem dado quebra a linha (vão visível, nunca ligado por cima)
       const x = sx(i), y = sy(v);
-      pathD += (pathD ? " L" : "M") + x + " " + y;
+      pathD += (anteriorNulo ? " M" : " L") + x + " " + y;
+      anteriorNulo = false;
       ultimo = {x,y,v};
     });
     if(pathD) svg.appendChild(el("path",{d:pathD, fill:"none", stroke:cor, "stroke-width":2, "stroke-linecap":"round", "stroke-linejoin":"round"}));
@@ -198,6 +200,10 @@ function renderInicio(){
   const temporalHint = document.getElementById('temporalHint');
   if(svgTemporal && temporalHint){
     const anosComPonto = desenharIndiceTemporal(svgTemporal, m.codigo, `${m.nome}-${m.uf}`);
+    document.querySelectorAll('#pillsRegua .pill').forEach(p=>p.classList.toggle('active', p.dataset.regua===state.reguaTemporal));
+    document.getElementById('notaRegua').innerHTML = state.reguaTemporal === 'fixa'
+      ? 'Régua fixa: todos os anos são normalizados pelo mesmo mínimo/máximo (o de toda a série 2015-2024), com pesos iguais — então <strong>uma queda na linha é melhora real</strong> dos indicadores, não só mudança de posição. Ressalva: em 2023 água e esgoto passam a vir do SINISA, com método diferente do SNIS (ver Metodologia &amp; Dados). Vãos são anos sem dado completo.'
+      : 'Régua de cada ano: cada ano é normalizado (mínimo/máximo) só entre os municípios com os 5 indicadores completos <em>naquele</em> ano, com pesos iguais — o valor mostra a <strong>posição relativa</strong> dentro do grupo daquele ano, e não é comparável entre anos. Para ver se o município melhorou de fato, use a régua fixa. Vãos são anos sem dado completo (nunca interpolados).';
     temporalHint.textContent = anosComPonto
       ? `— ${m.nome}-${m.uf} vs. média do painel, ${PAINEL.anoInicio}-${PAINEL.anoFim} (pesos iguais)`
       : `— ${m.nome}-${m.uf} não tem os ${INDICADORES_INDICE.length} indicadores do índice completos em nenhum ano; só a média do painel aparece no gráfico`;
