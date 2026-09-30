@@ -475,10 +475,24 @@
 
     <!-- ===================== PERFIL DO MUNICÍPIO ===================== -->
     <section id="view-perfil" class="view">
+      <!-- cabeçalho institucional: só aparece no relatório impresso/PDF -->
+      <div class="relatorio-cabecalho">
+        <img src="assets/images/sanedata-logo.svg" alt="SaneData">
+        <div>
+          <strong>Relatório executivo municipal</strong>
+          <span id="relatorioTitulo"></span>
+          <span>Emitido em <span id="relatorioData"></span> · sanerdata.vercel.app · PPGECAM/UFPE</span>
+        </div>
+      </div>
       <div class="perfil-cabecalho" id="perfilCabecalho"></div>
       <p class="scope-note">Ficha técnica do município selecionado no topo da página, no ano escolhido. Troque o município ou o ano no topo — ou clique em qualquer município no ranking, no mapa ou nas tabelas de variação — e esta ficha acompanha. O link desta página (botão "Copiar link") abre direto na ficha deste município.</p>
 
       <div class="cards-row" id="cardsPerfil"></div>
+
+      <div class="panel panel-wide resumo-executivo">
+        <h2>Resumo executivo</h2>
+        <div id="perfilResumo"></div>
+      </div>
 
       <div class="panel panel-wide">
         <div class="panel-titulo">

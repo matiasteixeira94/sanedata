@@ -138,3 +138,14 @@ test('régua fixa: mesma escala em todos os anos, entre 0 e 100', () => {
   // o mínimo global de cada indicador aparece em algum ano — a régua não é de um ano só
   assert.ok(Object.values(regua).every(r => r.max > r.min));
 });
+
+test('resumo executivo do Perfil: gera texto com e sem índice calculável, sem "NaN"/"undefined"', () => {
+  for (const codigo of [2611606, 2608008]) { // Recife (com índice em 2023) e Jataúba (sem esgoto em 2023)
+    P.state.ano = '2023';
+    P.state.municipioIdx = P.getDataset('2023').findIndex(m => m.codigo === codigo);
+    P.renderPerfil();
+    const texto = P.document.getElementById('perfilResumo').innerHTML;
+    assert.ok(texto.length > 200, `resumo vazio para ${codigo}`);
+    assert.ok(!/NaN|undefined|null/.test(texto), `valor inválido no resumo de ${codigo}`);
+  }
+});

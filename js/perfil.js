@@ -63,7 +63,7 @@ function renderPerfil(){
       <button class="btn-export" type="button" data-acao-perfil="comparar">Comparar com outro</button>
       <button class="btn-export" type="button" data-acao-perfil="simular">Simular cenário</button>
       <button class="btn-export" type="button" data-acao-perfil="copiar">Copiar link</button>
-      <button class="btn-export btn-export-primary" type="button" data-acao-perfil="imprimir">Imprimir / salvar PDF</button>
+      <button class="btn-export btn-export-primary" type="button" data-acao-perfil="imprimir">Relatório executivo (PDF)</button>
     </div>`;
 
   /* --- cards --- */
@@ -130,6 +130,11 @@ function renderPerfil(){
     }).join('') + `</tbody>`;
   document.getElementById('perfilTabelaHint').textContent = `— ${state.ano}; posição 1ª = maior valor do estado (mais crítico em déficit e doenças)`;
 
+  /* --- resumo executivo (texto gerado a partir dos mesmos números da ficha) --- */
+  document.getElementById('perfilResumo').innerHTML = resumoExecutivo(m, linhas, { completos, idx, posIdx, valorIdx, rankIdx });
+  document.getElementById('relatorioData').textContent = new Date().toLocaleDateString('pt-BR');
+  document.getElementById('relatorioTitulo').textContent = `${m.nome}-${m.uf} · ${state.ano}`;
+
   /* --- trajetória: um mini-gráfico por indicador (município × média PE) --- */
   const anos = anosDaSerie();
   const seriesMunicipio = new Map(), seriesMedia = new Map();
@@ -172,6 +177,61 @@ function renderPerfil(){
       pontos.map(p=>`<tr><td>${ROTULO_CATEGORIA[p.categoria] || p.categoria || '—'}</td><td>${escaparHTML(p.endereco)}</td><td style="text-align:left; font-family:var(--font-body); white-space:normal">${escaparHTML(p.descricao) || '—'}</td><td style="text-align:left; font-family:var(--font-body)">${escaparHTML(p.fonte) || '—'}</td></tr>`).join('') +
       `</tbody></table></div>`
     : `<p class="hint" style="display:block">Nenhum ponto de atenção registrado para ${m.nome} até o momento. Pontos são cadastrados pela equipe de pesquisa no mapa do Dashboard (modo curadoria).</p>`;
+}
+
+/* ============ RESUMO EXECUTIVO ============
+   Parágrafos em linguagem de gestor montados só com números já exibidos na ficha —
+   nenhuma afirmação que o dado não sustente (ex.: não recomenda obra; aponta qual
+   componente mais pesa no índice). Indicador sem dado é omitido, nunca estimado. */
+function resumoExecutivo(m, linhas, { completos, idx, posIdx, valorIdx, rankIdx }){
+  const pars = [];
+  const n = completos.length;
+
+  if(valorIdx !== null){
+    const quartil = rankIdx <= n/4 ? 'entre os 25% <strong>mais prioritários</strong> do estado'
+      : rankIdx > n*3/4 ? 'entre os 25% <strong>menos prioritários</strong> do estado' : 'na faixa <strong>intermediária</strong> de prioridade';
+    pars.push(`Em ${state.ano}, <strong>${m.nome}</strong> (${m.mesorregiao}, ${fmt(m.pop)} hab.) tem índice de priorização <strong>${fmt(valorIdx,1)}</strong> de 100 e ocupa a <strong>${rankIdx}ª posição</strong> entre ${n} municípios com dados completos — ${quartil} (${LABEL_PESO[state.peso||'igual']}).`);
+
+    const matrix = buildMatrix(completos, INDICADORES_INDICE);
+    const pesos = computeWeights(state.peso || 'igual', matrix);
+    const contrib = INDICADORES_INDICE.map((k,j)=>({ k, v: matrix[posIdx][j]*pesos[j]*100 })).sort((a,b)=>b.v-a.v);
+    const total = contrib.reduce((s,c)=>s+c.v,0) || 1;
+    const sanMaior = contrib.find(c => INDICADORES_DEFICIT.includes(c.k));
+    pars.push(`O indicador que mais pesa no índice do município é <strong>${LABELS[contrib[0].k].toLowerCase()}</strong> (${fmt(contrib[0].v,1)} pontos, ${fmt(contrib[0].v/total*100,0)}% do total)` +
+      (sanMaior && sanMaior !== contrib[0] ? `; entre os componentes de saneamento, o de maior peso é <strong>${LABELS[sanMaior.k].toLowerCase()}</strong> (${fmt(sanMaior.v,1)} pontos).` : '.'));
+  } else {
+    const faltando = INDICADORES_INDICE.filter(k => valorIndicador(m,k) === null).map(k=>LABELS[k].toLowerCase());
+    pars.push(`Em ${state.ano}, <strong>${m.nome}</strong> (${m.mesorregiao}, ${fmt(m.pop)} hab.) não tem índice de priorização calculado porque falta ${faltando.join(', ')} na fonte oficial. Os demais indicadores estão abaixo.`);
+  }
+
+  const situacao = (l) => l.chave === 'indice' ? null : situacaoFrenteMedia(l.valor, l.mediaPE, l.chave);
+  const criticos = linhas.filter(l => situacao(l) && situacao(l).classe === 'tag-alerta');
+  const favoraveis = linhas.filter(l => situacao(l) && situacao(l).classe === 'tag-ok');
+  const lista = (ls) => ls.map(l => `${l.rotulo.toLowerCase()} (${fmtIndicador(l.valor,l.chave)} vs. ${fmtIndicador(l.mediaPE,l.chave)} na média de PE)`).join('; ');
+  if(criticos.length) pars.push(`<strong>Pontos críticos</strong> — piores que a média estadual: ${lista(criticos)}.`);
+  if(favoraveis.length) pars.push(`<strong>Pontos favoráveis</strong> — melhores que a média estadual: ${lista(favoraveis)}.`);
+
+  /* tendência na régua fixa: primeiro × último ano com índice do município */
+  const serie = anosDaSerie().map(a => ({ a, v: valorIndicador(getDataset(a).find(d=>d.codigo===m.codigo), CHAVE_INDICE_FIXO) })).filter(p => p.v !== null);
+  if(serie.length >= 2){
+    const p0 = serie[0], p1 = serie[serie.length-1], d = p1.v - p0.v;
+    const sentido = Math.abs(d) < 1 ? 'ficou estável' : d < 0 ? `<strong>melhorou</strong> (caiu ${fmt(Math.abs(d),1)} pontos)` : `<strong>piorou</strong> (subiu ${fmt(d,1)} pontos)`;
+    pars.push(`<strong>Tendência</strong> — no índice de régua fixa (comparável entre anos), o município ${sentido} entre ${p0.a} (${fmt(p0.v,1)}) e ${p1.a} (${fmt(p1.v,1)}). A partir de 2023, água e esgoto vêm do SINISA, com método diferente do SNIS.`);
+  }
+
+  /* investimento: ano mais recente com dado */
+  const comInvest = anosDaSerie().map(a => {
+    const lista = getDataset(a);
+    return { a, v: valorIndicador(lista.find(d=>d.codigo===m.codigo), CHAVE_INVESTIMENTO_TOTAL), lista };
+  }).filter(p => p.v !== null);
+  if(comInvest.length){
+    const ult = comInvest[comInvest.length-1];
+    const mediana = quantil(ult.lista.map(d=>valorIndicador(d, CHAVE_INVESTIMENTO_TOTAL)).filter(v=>v!==null), .5);
+    pars.push(`<strong>Investimento</strong> — em ${ult.a} (último ano com dado), foram investidos R$ ${fmtMoedaCompacta(ult.v)} por 100 mil hab. em água e esgoto (R$ de ${PAINEL.investimentoPrecosDe || '—'}), ${ult.v >= mediana ? 'acima' : 'abaixo'} da mediana estadual de R$ ${fmtMoedaCompacta(mediana)}.`);
+  }
+
+  pars.push(`<span class="hint">Texto gerado automaticamente pelo SaneData a partir de dados oficiais (IBGE, DATASUS, SNIS/SINISA). A comparação com a média usa margem de ±${TOLERANCIA_MEDIA*100}%.</span>`);
+  return pars.map(p => `<p>${p}</p>`).join('');
 }
 
 /* texto vindo do cadastro de pontos de atenção é digitado à mão — nunca injetar como HTML cru */

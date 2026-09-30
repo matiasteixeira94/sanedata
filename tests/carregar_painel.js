@@ -43,7 +43,7 @@ function carregarPainel({ painel } = {}){
       definirPainel: (p) => { PAINEL = p; limparCachesPainel(); state.ano = anoPadrao(); },
       state, getDataset, indiceCompletoCache, indiceReguaFixaCache, reguaFixaDaSerie, valorIndicador,
       computeIndex, computeWeights, buildMatrix, rank, rankDesc, spearman, quantil, media, minMax,
-      simularIndice, estatisticaPorAno, INDICADORES_INDICE, CHAVE_INDICE_FIXO, CHAVE_INVESTIMENTO_TOTAL,
+      simularIndice, estatisticaPorAno, renderPerfil, document, INDICADORES_INDICE, CHAVE_INDICE_FIXO, CHAVE_INVESTIMENTO_TOTAL,
     };`, ctx);
   const api = ctx.__painel;
   const dados = painel || JSON.parse(fs.readFileSync(path.join(RAIZ, 'data', 'processed', 'painel_pe.json'), 'utf8'));
