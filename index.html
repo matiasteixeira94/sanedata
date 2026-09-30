@@ -83,6 +83,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20V13"/></svg>
         Comparações
       </button>
+      <button class="nav-item" data-view="simulador">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+        Simulador de Cenários
+      </button>
       <span class="nav-grupo">Referência</span>
       <button class="nav-item" data-view="relatorios">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l5 5v13H6z"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>
@@ -148,6 +152,10 @@
           <button class="hero-nav-btn" data-view="comparacoes">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20V13"/></svg>
             Comparações
+          </button>
+          <button class="hero-nav-btn" data-view="simulador">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+            Simulador de Cenários
           </button>
           <button class="hero-nav-btn" data-view="relatorios">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l5 5v13H6z"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>
@@ -243,6 +251,9 @@
         <p><strong>Séries Históricas</strong> mostra como Pernambuco evoluiu em cada indicador
           de 2015 a 2024 (mediana, faixa interquartil e média por mesorregião) e quais municípios
           mais melhoraram ou pioraram entre dois anos.</p>
+        <p><strong>Simulador de Cenários</strong> testa intervenções hipotéticas ("e se o déficit
+          de esgoto caísse pela metade?") e mostra o novo índice e a nova posição do município no
+          ranking do ano.</p>
         <p><strong>Metodologia &amp; Dados</strong> traz a fórmula do índice, o dicionário de
           indicadores, a cobertura de dado por ano, a robustez do ranking entre esquemas de peso,
           os arquivos para download e a referência para citação.</p>
@@ -508,6 +519,51 @@
       <p class="hint" style="display:block">Clique em um município das tabelas para abrir o Perfil dele. Só entram municípios com o indicador apurado nos dois anos comparados.</p>
     </section>
 
+    <!-- ===================== SIMULADOR DE CENÁRIOS ===================== -->
+    <section id="view-simulador" class="view">
+      <p class="scope-note">Teste o efeito de uma intervenção: ajuste os indicadores do município e veja como mudam o índice de priorização e a posição dele no estado em <strong id="simAno"></strong>. Município em simulação: <strong id="simMunicipio"></strong> (troque no topo da página). O cenário é <strong>hipotético</strong> — nada do que for ajustado aqui altera os dados das outras telas.</p>
+
+      <div id="simAviso"></div>
+
+      <div id="simConteudo">
+        <div class="filter-bar">
+          <div class="field" style="flex:1; min-width:260px">
+            <span class="field-label">Cenários prontos</span>
+            <div class="pills" id="simPresets"></div>
+          </div>
+          <div class="field">
+            <label for="selSimPeso">Esquema de pesos</label>
+            <select id="selSimPeso">
+              <option value="igual">Peso igual (padrão)</option>
+              <option value="entropia">Peso pela variação dos dados</option>
+              <option value="pca">Peso pela análise estatística (PCA)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="cards-row cards-row-3" id="simCards"></div>
+
+        <div class="grid-2 grid-2-iguais">
+          <div class="panel">
+            <h2>Ajuste os indicadores <span class="hint">— arraste ou digite o valor do cenário</span></h2>
+            <div id="simControles"></div>
+          </div>
+          <div class="panel">
+            <h2>Contribuição de cada indicador <span class="hint">— pontos do índice, real × cenário</span></h2>
+            <svg id="chartSimContrib" viewBox="0 0 480 200" role="img" aria-label="Contribuição de cada indicador para o índice de priorização, valor real comparado ao cenário simulado"></svg>
+            <div class="mapa-legenda">
+              <span class="legenda-item"><span class="legenda-swatch" style="background:var(--text-muted)"></span>Real</span>
+              <span class="legenda-item"><span class="legenda-swatch" style="background:var(--bordo)"></span>Cenário</span>
+            </div>
+            <h2 style="margin-top:22px">Posição no ranking simulado <span class="hint">— vizinhos no cenário</span></h2>
+            <div class="ranking-list" id="simVizinhanca"></div>
+          </div>
+        </div>
+        <p class="scope-note" id="simNotaEscala"></p>
+        <p class="scope-note">Como funciona: o índice é recalculado com todos os municípios do ano, trocando só os valores do município simulado. Como a normalização usa o mínimo e o máximo do estado (e os pesos de entropia/PCA dependem de todos), a posição final depende também de onde os outros municípios estão. Reduzir déficit ou doença diminui o índice, ou seja, o município passa a ser <em>menos</em> prioritário para investimento.</p>
+      </div>
+    </section>
+
     <!-- ===================== RELATÓRIOS ===================== -->
     <section id="view-relatorios" class="view">
       <div class="filter-bar">
@@ -704,6 +760,7 @@
 <script src="js/series.js"></script>
 <script src="js/perfil.js"></script>
 <script src="js/metodologia.js"></script>
+<script src="js/simulador.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

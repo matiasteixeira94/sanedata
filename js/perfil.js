@@ -61,6 +61,7 @@ function renderPerfil(){
     </div>
     <div class="perfil-acoes">
       <button class="btn-export" type="button" data-acao-perfil="comparar">Comparar com outro</button>
+      <button class="btn-export" type="button" data-acao-perfil="simular">Simular cenário</button>
       <button class="btn-export" type="button" data-acao-perfil="copiar">Copiar link</button>
       <button class="btn-export btn-export-primary" type="button" data-acao-perfil="imprimir">Imprimir / salvar PDF</button>
     </div>`;

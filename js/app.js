@@ -2,12 +2,13 @@
 let currentView = 'inicio';
 const TITULOS_VIEW = {
   inicio:'Tela Inicial', apresentacao:'Apresentação', dashboard:'Dashboard', perfil:'Perfil do Município',
-  series:'Séries Históricas', relatorios:'Relatórios', comparacoes:'Comparações', metodologia:'Metodologia & Dados',
+  series:'Séries Históricas', simulador:'Simulador de Cenários', relatorios:'Relatórios', comparacoes:'Comparações', metodologia:'Metodologia & Dados',
 };
 function renderCurrentView(){
   if(currentView==='dashboard') renderDashboard(); // já inclui o mapa geográfico (renderMapaGeo) e "Município em foco" (renderInicio)
   if(currentView==='perfil') renderPerfil();
   if(currentView==='series') renderSeries();
+  if(currentView==='simulador') renderSimulador();
   if(currentView==='relatorios') renderRelatorios();
   if(currentView==='comparacoes') renderComparacoes();
   if(currentView==='metodologia') renderMetodologia();
@@ -257,6 +258,7 @@ document.getElementById('perfilCabecalho').addEventListener('click', (e)=>{
   if(!btn) return;
   const acao = btn.dataset.acaoPerfil;
   if(acao === 'imprimir') window.print();
+  if(acao === 'simular') setView('simulador');
   if(acao === 'copiar') copiarTexto(location.href, btn);
   if(acao === 'comparar'){
     state.compA = state.municipioIdx;

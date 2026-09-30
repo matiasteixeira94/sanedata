@@ -23,6 +23,9 @@ Painel interativo para priorização de investimentos em saneamento e saúde pú
   (`#perfil/<código IBGE>`).
 - **Séries Históricas** — evolução estadual de cada indicador (mediana, faixa
   interquartil, média por mesorregião) e maiores melhoras/pioras entre dois anos.
+- **Simulador de Cenários** — ajusta os indicadores de um município (ou aplica
+  cenários prontos, como universalizar água e esgoto) e recalcula o índice e a
+  posição no ranking do ano; o cenário é hipotético e não altera as outras telas.
 - **Metodologia & Dados** — fórmula do índice, pesos e robustez do ranking
   entre esquemas, dicionário de indicadores, cobertura de dado por ano, dados
   abertos para download e referência para citação.
