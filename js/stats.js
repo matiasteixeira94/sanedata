@@ -85,3 +85,13 @@ function linreg(xs, ys){
   const a = den ? num/den : 0;
   return {a, b: my - a*mx};
 }
+/* média e quantil (interpolação linear, mesmo método do numpy/Excel QUARTIL.INC) — usados
+   nas Séries Históricas (mediana e faixa interquartil por ano) e no Perfil do Município.
+   Ambos recebem só valores já filtrados (sem null) e devolvem null pra lista vazia, nunca 0. */
+function media(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : null; }
+function quantil(arr, p){
+  if(!arr.length) return null;
+  const ord = [...arr].sort((a,b)=>a-b);
+  const pos = (ord.length-1)*p, base = Math.floor(pos), resto = pos-base;
+  return ord[base+1]!==undefined ? ord[base]+resto*(ord[base+1]-ord[base]) : ord[base];
+}

@@ -49,13 +49,15 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">
+      <span class="brand-marca" aria-hidden="true">SD</span>
       <div class="brand-text">
         <strong>SaneData</strong>
-        <span>Painel de Priorização</span>
+        <span>Saneamento &amp; Saúde · PE</span>
       </div>
     </div>
 
-    <nav class="nav" id="nav">
+    <nav class="nav" id="nav" aria-label="Telas do painel">
+      <span class="nav-grupo">Visão geral</span>
       <button class="nav-item active" data-view="inicio">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9h14v-9"/></svg>
         Tela Inicial
@@ -68,13 +70,27 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg>
         Dashboard
       </button>
-      <button class="nav-item" data-view="relatorios">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l5 5v13H6z"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>
-        Relatórios
+      <span class="nav-grupo">Análise</span>
+      <button class="nav-item" data-view="perfil">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+        Perfil do Município
+      </button>
+      <button class="nav-item" data-view="series">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m7 15 4-5 3 3 5-7"/></svg>
+        Séries Históricas
       </button>
       <button class="nav-item" data-view="comparacoes">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20V13"/></svg>
         Comparações
+      </button>
+      <span class="nav-grupo">Referência</span>
+      <button class="nav-item" data-view="relatorios">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l5 5v13H6z"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>
+        Relatórios
+      </button>
+      <button class="nav-item" data-view="metodologia">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg>
+        Metodologia &amp; Dados
       </button>
     </nav>
 
@@ -112,11 +128,7 @@
         <div class="hero-logo-wrap">
           <img src="assets/images/sanedata-logo.svg" alt="SaneData — inteligência em saneamento" class="hero-logo">
         </div>
-        <nav class="hero-nav" id="heroNav">
-          <button class="hero-nav-btn active" data-view="inicio">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9h14v-9"/></svg>
-            Tela Inicial
-          </button>
+        <nav class="hero-nav" id="heroNav" aria-label="Telas do painel">
           <button class="hero-nav-btn" data-view="apresentacao">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.4" r="0.6" fill="currentColor" stroke="none"/></svg>
             Apresentação
@@ -125,13 +137,25 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg>
             Dashboard
           </button>
-          <button class="hero-nav-btn" data-view="relatorios">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l5 5v13H6z"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>
-            Relatórios
+          <button class="hero-nav-btn" data-view="perfil">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            Perfil do Município
+          </button>
+          <button class="hero-nav-btn" data-view="series">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m7 15 4-5 3 3 5-7"/></svg>
+            Séries Históricas
           </button>
           <button class="hero-nav-btn" data-view="comparacoes">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20V13"/></svg>
             Comparações
+          </button>
+          <button class="hero-nav-btn" data-view="relatorios">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l5 5v13H6z"/><path d="M9 12h6M9 16h6M9 8h2"/></svg>
+            Relatórios
+          </button>
+          <button class="hero-nav-btn" data-view="metodologia">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg>
+            Metodologia &amp; Dados
           </button>
         </nav>
         <button class="btn-export btn-atualizar" id="btnAtualizarDados" type="button">🔄 Atualizar dados</button>
@@ -212,6 +236,16 @@
           exportação em CSV, Excel, imagem e impressão/PDF.</p>
         <p><strong>Comparações</strong> coloca dois municípios lado a lado, indicador por
           indicador, com a média do painel como referência.</p>
+        <p><strong>Perfil do Município</strong> é a ficha técnica de um município: todos os
+          indicadores do ano com a média estadual e da mesorregião, posição no estado, variação
+          frente ao ano anterior e a trajetória de cada indicador — pronta para imprimir ou
+          compartilhar por link.</p>
+        <p><strong>Séries Históricas</strong> mostra como Pernambuco evoluiu em cada indicador
+          de 2015 a 2024 (mediana, faixa interquartil e média por mesorregião) e quais municípios
+          mais melhoraram ou pioraram entre dois anos.</p>
+        <p><strong>Metodologia &amp; Dados</strong> traz a fórmula do índice, o dicionário de
+          indicadores, a cobertura de dado por ano, a robustez do ranking entre esquemas de peso,
+          os arquivos para download e a referência para citação.</p>
       </div>
 
       <div class="secao-divisor"><h2>Fontes e limitações</h2></div>
@@ -312,7 +346,7 @@
 
       <div class="panel panel-wide">
         <h2>Investimento em saneamento por município <span class="hint">— top 15, R$ por 100 mil habitantes, água+esgoto, 2015-2022</span></h2>
-        <svg id="chartInvestimentoDashboard" viewBox="0 0 900 460" role="img" aria-label="Gráfico de colunas verticais do investimento em saneamento dos municípios com maior investimento, separado por entidade executora, com o valor em cima de cada coluna"</svg>
+        <svg id="chartInvestimentoDashboard" viewBox="0 0 900 460" role="img" aria-label="Gráfico de colunas verticais do investimento em saneamento dos municípios com maior investimento, separado por entidade executora, com o valor em cima de cada coluna"></svg>
         <div class="mapa-legenda">
           <span class="legenda-item"><span class="legenda-swatch" style="background:var(--bordo)"></span>Prestador</span>
           <span class="legenda-item"><span class="legenda-swatch" style="background:var(--verde)"></span>Município</span>
@@ -332,6 +366,7 @@
 
       <div class="secao-divisor">
         <h2>Município em foco <span class="hint">— use o seletor de Município/Ano no topo da página; os dois campos abaixo só afetam esta seção</span></h2>
+        <button class="btn-export" type="button" data-view-link="perfil" style="margin-top:10px">Abrir ficha completa do município →</button>
       </div>
 
       <div class="filter-bar">
@@ -382,6 +417,97 @@
       </div>
     </section>
 
+    <!-- ===================== PERFIL DO MUNICÍPIO ===================== -->
+    <section id="view-perfil" class="view">
+      <div class="perfil-cabecalho" id="perfilCabecalho"></div>
+      <p class="scope-note">Ficha técnica do município selecionado no topo da página, no ano escolhido. Troque o município ou o ano no topo — ou clique em qualquer município no ranking, no mapa ou nas tabelas de variação — e esta ficha acompanha. O link desta página (botão "Copiar link") abre direto na ficha deste município.</p>
+
+      <div class="cards-row" id="cardsPerfil"></div>
+
+      <div class="panel panel-wide">
+        <h2>Indicadores do município <span class="hint" id="perfilTabelaHint"></span></h2>
+        <div class="table-scroll">
+          <table class="tabela-relatorio tabela-perfil" id="tabelaPerfil"></table>
+        </div>
+        <p class="hint" style="display:block; margin-top:10px">"Situação" compara o valor do município à média estadual, com margem de ±10% tratada como "próximo da média". Em déficit e em doenças, valor maior é pior; o índice de priorização maior indica mais necessidade de investimento.</p>
+      </div>
+
+      <div class="secao-divisor">
+        <h2>Trajetória na série histórica <span class="hint">— município × média de Pernambuco, todos os anos disponíveis</span></h2>
+      </div>
+      <div class="mapa-legenda legenda-topo" id="legendaPerfil"></div>
+      <div class="grid-multiplos" id="perfilMultiplos"></div>
+
+      <div class="panel panel-wide" style="margin-top:16px">
+        <h2>Pontos de atenção registrados <span class="hint">— locais que precisam de obra, curadoria da equipe de pesquisa</span></h2>
+        <div id="perfilPontos"></div>
+      </div>
+    </section>
+
+    <!-- ===================== SÉRIES HISTÓRICAS ===================== -->
+    <section id="view-series" class="view">
+      <div class="filter-bar">
+        <div class="field">
+          <label for="selSerieIndicador">Indicador</label>
+          <select id="selSerieIndicador">
+            <optgroup label="Saneamento — déficit (%)">
+              <option value="deficitAgua">Déficit de água</option>
+              <option value="deficitEsgoto">Déficit de esgoto</option>
+              <option value="deficitResiduos">Déficit de resíduos</option>
+            </optgroup>
+            <optgroup label="Saúde — casos/internações por 100 mil hab.">
+              <option value="taxaDengue">Dengue</option>
+              <option value="taxaChikungunya">Chikungunya</option>
+              <option value="taxaDiarreia">Diarreia aguda</option>
+            </optgroup>
+            <optgroup label="Investimento">
+              <option value="investimentoTotalPer100k">Investimento em saneamento (R$/100 mil hab.)</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field field-ano">
+          <label for="selSerieDe">Comparar de</label>
+          <select id="selSerieDe"></select>
+        </div>
+        <div class="field field-ano">
+          <label for="selSerieAte">até</label>
+          <select id="selSerieAte"></select>
+        </div>
+      </div>
+
+      <p class="scope-note">Esta tela usa a série inteira (não o ano do topo da página). A <strong>mediana</strong> é o valor do município "do meio" do estado — menos sensível a extremos que a média — e a <strong>faixa sombreada</strong> cobre os 50% centrais dos municípios (entre o 1º e o 3º quartil). Anos sem dado aparecem como vão na linha, nunca interpolados. O índice de priorização não aparece aqui de propósito: ele é normalizado dentro de cada ano, então não é comparável entre anos.</p>
+
+      <div class="cards-row" id="cardsSeries"></div>
+
+      <div class="panel panel-wide">
+        <h2>Pernambuco — distribuição dos municípios ao longo do tempo <span class="hint" id="serieEstadoHint"></span></h2>
+        <svg id="chartSerieEstado" viewBox="0 0 900 260" role="img" aria-label="Gráfico de linha com a mediana, a média e a faixa interquartil do indicador selecionado entre os municípios de Pernambuco, ano a ano"></svg>
+        <div class="mapa-legenda" id="legendaSerieEstado"></div>
+        <details class="tabela-alternativa">
+          <summary>Ver dados em tabela</summary>
+          <div class="table-scroll"><table class="tabela-relatorio" id="tabelaSerieEstado"></table></div>
+        </details>
+      </div>
+
+      <div class="panel panel-wide">
+        <h2>Média por mesorregião <span class="hint">— agrupamento oficial do IBGE</span></h2>
+        <svg id="chartSerieMeso" viewBox="0 0 900 260" role="img" aria-label="Gráfico de linha com a média do indicador selecionado em cada mesorregião de Pernambuco, ano a ano"></svg>
+        <div class="mapa-legenda" id="legendaSerieMeso"></div>
+      </div>
+
+      <div class="grid-2 grid-2-iguais">
+        <div class="panel">
+          <h2>Maiores melhoras <span class="hint serie-periodo"></span></h2>
+          <div class="table-scroll"><table class="tabela-relatorio" id="tabelaSerieMelhoras"></table></div>
+        </div>
+        <div class="panel">
+          <h2>Maiores pioras <span class="hint serie-periodo"></span></h2>
+          <div class="table-scroll"><table class="tabela-relatorio" id="tabelaSeriePioras"></table></div>
+        </div>
+      </div>
+      <p class="hint" style="display:block">Clique em um município das tabelas para abrir o Perfil dele. Só entram municípios com o indicador apurado nos dois anos comparados.</p>
+    </section>
+
     <!-- ===================== RELATÓRIOS ===================== -->
     <section id="view-relatorios" class="view">
       <div class="filter-bar">
@@ -411,7 +537,7 @@
 
       <div class="panel panel-wide">
         <h2>Investimento em saneamento por município <span class="hint">— top 15, R$ por 100 mil habitantes, água+esgoto, 2015-2022</span></h2>
-        <svg id="chartInvestimentoRelatorio" viewBox="0 0 900 460" role="img" aria-label="Gráfico de colunas verticais do investimento em saneamento dos municípios com maior investimento, separado por entidade executora, com o valor em cima de cada coluna"</svg>
+        <svg id="chartInvestimentoRelatorio" viewBox="0 0 900 460" role="img" aria-label="Gráfico de colunas verticais do investimento em saneamento dos municípios com maior investimento, separado por entidade executora, com o valor em cima de cada coluna"></svg>
         <div class="mapa-legenda">
           <span class="legenda-item"><span class="legenda-swatch" style="background:var(--bordo)"></span>Prestador</span>
           <span class="legenda-item"><span class="legenda-swatch" style="background:var(--verde)"></span>Município</span>
@@ -468,6 +594,105 @@
       </div>
     </section>
 
+    <!-- ===================== METODOLOGIA & DADOS ===================== -->
+    <section id="view-metodologia" class="view">
+      <p class="scope-note">Referência técnica do painel: como o índice é calculado, o que cada indicador mede, de onde vem cada dado e quanto dele existe em cada ano. Versão dos dados carregados: <strong id="metodologiaVersaoDados">—</strong>.</p>
+
+      <div class="secao-divisor"><h2>Cálculo do índice de priorização</h2></div>
+      <div class="grid-2 grid-2-iguais">
+        <div class="panel">
+          <h2>1. Normalização</h2>
+          <p>Cada indicador é reescalado para 0-1 entre os municípios com os cinco indicadores completos <em>no mesmo ano</em> (mínimo-máximo):</p>
+          <div class="formula">x′<sub>ij</sub> = (x<sub>ij</sub> − min<sub>j</sub>) ÷ (max<sub>j</sub> − min<sub>j</sub>)</div>
+          <p class="hint" style="display:block">i = município, j = indicador. Como todos os indicadores do índice são "quanto maior, pior", não há inversão de sentido.</p>
+        </div>
+        <div class="panel">
+          <h2>2. Agregação ponderada</h2>
+          <p>O índice é a soma ponderada dos indicadores normalizados, em escala 0-100:</p>
+          <div class="formula">I<sub>i</sub> = 100 × Σ<sub>j</sub> w<sub>j</sub> · x′<sub>ij</sub>, &nbsp; com Σ w<sub>j</sub> = 1</div>
+          <p class="hint" style="display:block">Pesos padrão iguais (w = 0,20). Alternativas: entropia de Shannon (peso maior para o indicador que mais discrimina os municípios) e PCA (cargas absolutas do 1º componente principal, normalizadas).</p>
+        </div>
+      </div>
+
+      <div class="grid-2 grid-2-iguais">
+        <div class="panel">
+          <h2>Pesos de cada esquema em <span class="metodologia-ano"></span></h2>
+          <div class="table-scroll"><table class="tabela-relatorio" id="tabelaPesos"></table></div>
+        </div>
+        <div class="panel">
+          <h2>Robustez do ranking <span class="hint" id="robustezHint"></span></h2>
+          <div class="table-scroll"><table class="tabela-relatorio" id="tabelaRobustez"></table></div>
+          <p class="hint" style="display:block; margin-top:10px">ρ próximo de +1 e top 10 quase igual indicam que a ordem de prioridade não depende do critério de ponderação escolhido.</p>
+        </div>
+      </div>
+
+      <div class="secao-divisor"><h2>Dicionário de indicadores</h2></div>
+      <div class="panel panel-wide">
+        <div class="table-scroll">
+          <table class="tabela-relatorio tabela-dicionario">
+            <thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Cobertura</th><th>No índice?</th></tr></thead>
+            <tbody>
+              <tr><td>Déficit de água</td><td>100 − atendimento total de água (SNIS IN023 até 2022; SINISA IAG0001 em 2023)</td><td>%</td><td>SNIS (Base dos Dados) até 2022; Painel SINISA em 2023</td><td>2015-2023</td><td>Sim</td></tr>
+              <tr><td>Déficit de esgoto</td><td>100 − coleta de esgoto (SNIS <code>indice_coleta_esgoto</code>, referido à pop. atendida com água, até 2022; SINISA IES0001, pop. total, em 2023 — há quebra de método entre as fontes)</td><td>%</td><td>SNIS (Base dos Dados) até 2022; Painel SINISA em 2023</td><td>2015-2023, parcial</td><td>Sim</td></tr>
+              <tr><td>Déficit de resíduos</td><td>100 − cobertura da população total com coleta de resíduos domiciliares (SINISA IRS0001)</td><td>%</td><td>Painel SINISA</td><td>2023</td><td>Não (série curta)</td></tr>
+              <tr><td>Dengue</td><td>Casos notificados por 100 mil habitantes</td><td>/100 mil hab.</td><td>DATASUS / SINAN</td><td>2015-2024</td><td>Sim</td></tr>
+              <tr><td>Chikungunya</td><td>Casos notificados por 100 mil habitantes</td><td>/100 mil hab.</td><td>DATASUS / SINAN</td><td>2015-2024</td><td>Sim</td></tr>
+              <tr><td>Diarreia aguda</td><td>Internações por doenças infecciosas intestinais (CID-10 A00-A09) por 100 mil hab. — proxy</td><td>/100 mil hab.</td><td>DATASUS / SIH-SUS</td><td>2015-2024</td><td>Sim</td></tr>
+              <tr><td>Investimento em saneamento</td><td>Investimento realizado em água e esgoto por prestador, município e estado (R$ nominais)</td><td>R$/100 mil hab.</td><td>SNIS (Base dos Dados)</td><td>2015-2022</td><td>Não (contexto)</td></tr>
+              <tr><td>População</td><td>Estimativa populacional usada como denominador das taxas</td><td>habitantes</td><td>IBGE (SIDRA, agregado 6579)</td><td>2015-2024</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="secao-divisor"><h2>Cobertura dos dados <span class="hint" id="coberturaHint"></span></h2></div>
+      <div class="panel panel-wide">
+        <div class="table-scroll">
+          <table class="tabela-relatorio tabela-cobertura" id="tabelaCobertura"></table>
+        </div>
+        <p class="hint" style="display:block; margin-top:10px">Célula mais verde = mais municípios com dado. "—" = nenhum município com o indicador apurado naquele ano. O painel nunca preenche essas lacunas com estimativas.</p>
+      </div>
+
+      <div class="grid-2 grid-2-iguais">
+        <div class="panel">
+          <h2>Dados abertos</h2>
+          <p style="margin-bottom:12px">Os arquivos consumidos pelo painel estão disponíveis para download e reuso:</p>
+          <ul class="lista-downloads">
+            <li><a href="data/processed/painel_pe.json" download>painel_pe.json</a> <span class="hint">— base consolidada município × ano</span></li>
+            <li><a href="data/processed/saneamento_pe.csv" download>saneamento_pe.csv</a> <span class="hint">— déficits de água, esgoto e resíduos</span></li>
+            <li><a href="data/processed/investimento_saneamento_pe.csv" download>investimento_saneamento_pe.csv</a> <span class="hint">— investimento por entidade</span></li>
+            <li><a href="data/processed/saude_notificacoes_pe.csv" download>saude_notificacoes_pe.csv</a> <span class="hint">— dengue e chikungunya</span></li>
+            <li><a href="data/processed/saude_internacoes_dda_pe.csv" download>saude_internacoes_dda_pe.csv</a> <span class="hint">— internações por diarreia</span></li>
+            <li><a href="data/processed/municipios_pe.csv" download>municipios_pe.csv</a> <span class="hint">— população e mesorregião</span></li>
+            <li><a href="data/processed/malha_municipios_pe.geojson" download>malha_municipios_pe.geojson</a> <span class="hint">— malha municipal (IBGE)</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>Como citar</h2>
+          <p class="citacao" id="citacao">TEIXEIRA, Alisson Matias. <strong>SaneData</strong>: painel de priorização de investimentos em saneamento e saúde pública nos municípios de Pernambuco. Caruaru: PPGECAM/UFPE, 2026. Disponível em: https://sanerdata.vercel.app/. Acesso em: <span id="citacaoAcesso"></span>.</p>
+          <button class="btn-export" type="button" id="btnCopiarCitacao" style="margin-top:12px">Copiar referência</button>
+          <h2 style="margin-top:22px">Limitações conhecidas</h2>
+          <ul class="lista-limitacoes">
+            <li>Esgoto tem cobertura parcial em todas as fontes; 2024 ainda não tem saneamento publicado.</li>
+            <li>Diarreia é aproximada por internações (SIH), que subestimam casos tratados na atenção básica.</li>
+            <li>Notificações (SINAN) dependem da capacidade de vigilância de cada município.</li>
+            <li>O índice é relativo ao ano: mede posição entre municípios, não evolução absoluta.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer class="rodape" id="rodape">
+      <div class="rodape-col">
+        <span><strong>SaneData</strong> · Painel de Priorização em Saneamento &amp; Saúde Pública — Pernambuco</span>
+        <span>Projeto de doutorado · PPGECAM/UFPE – Campus Agreste · Autor: Alisson Matias Teixeira</span>
+      </div>
+      <div class="rodape-col rodape-direita">
+        <span>Fontes: IBGE · DATASUS (SINAN/SIH-SUS) · SNIS/SINISA</span>
+        <span>Dados gerados em <strong id="rodapeVersao">—</strong> · <button type="button" class="link-rodape" data-view-link="metodologia">Metodologia &amp; como citar</button></span>
+      </div>
+    </footer>
+
   </div>
 </div>
 
@@ -476,6 +701,9 @@
 <script src="js/render.js"></script>
 <script src="js/geo.js"></script>
 <script src="js/export.js"></script>
+<script src="js/series.js"></script>
+<script src="js/perfil.js"></script>
+<script src="js/metodologia.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

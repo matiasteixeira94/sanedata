@@ -31,7 +31,8 @@ const LABELS = {
 const LABEL_PESO = { igual:"pesos iguais", entropia:"entropia de Shannon", pca:"PCA (1º componente)" };
 
 let PAINEL = null; // payload bruto de data/processed/painel_pe.json
-let state = { ano:null, indicador:"taxaDengue", componente:"deficitAgua", municipioIdx:0, peso:"igual", mapaCamada:"indice", compA:0, compB:1 };
+let state = { ano:null, indicador:"taxaDengue", componente:"deficitAgua", municipioIdx:0, peso:"igual", mapaCamada:"indice", compA:0, compB:1,
+  serieIndicador:"deficitAgua", serieDe:null, serieAte:null }; // serieDe/serieAte null = padrão calculado a partir da cobertura do indicador (ver js/series.js)
 
 /* ============ CARREGAMENTO DOS DADOS REAIS ============ */
 async function carregarPainel(){

@@ -1,32 +1,86 @@
 /* ============ NAVEGAÇÃO ============ */
 let currentView = 'inicio';
+const TITULOS_VIEW = {
+  inicio:'Tela Inicial', apresentacao:'Apresentação', dashboard:'Dashboard', perfil:'Perfil do Município',
+  series:'Séries Históricas', relatorios:'Relatórios', comparacoes:'Comparações', metodologia:'Metodologia & Dados',
+};
 function renderCurrentView(){
   if(currentView==='dashboard') renderDashboard(); // já inclui o mapa geográfico (renderMapaGeo) e "Município em foco" (renderInicio)
+  if(currentView==='perfil') renderPerfil();
+  if(currentView==='series') renderSeries();
   if(currentView==='relatorios') renderRelatorios();
   if(currentView==='comparacoes') renderComparacoes();
+  if(currentView==='metodologia') renderMetodologia();
   // 'inicio' e 'apresentacao' são conteúdo estático (institucional / texto explicativo), sem render dinâmico
+  if(currentView==='perfil') atualizarHash(true); // o município pode ter mudado — o link compartilhável acompanha
 }
-function setView(view){
+
+/* ============ ENDEREÇO (URL) DE CADA TELA ============
+   #dashboard, #series, #perfil/2611606 (código IBGE)... — permite compartilhar o link de
+   uma tela ou da ficha de um município, e faz o botão "voltar" do navegador funcionar
+   entre telas. O ano não entra no link de propósito: quem abre depois vê o ano padrão
+   (o mais recente com índice calculável), não um ano que pode ter ficado desatualizado. */
+function hashDaView(view){
+  if(view === 'perfil'){
+    const m = getDataset(state.ano)[state.municipioIdx];
+    return m ? `#perfil/${m.codigo}` : '#perfil';
+  }
+  return view === 'inicio' ? '#' : '#'+view;
+}
+function atualizarHash(substituir){
+  const novo = hashDaView(currentView);
+  if((location.hash || '#') === novo) return;
+  const url = novo === '#' ? location.pathname + location.search : novo;
+  if(substituir) history.replaceState(null, '', url);
+  else history.pushState(null, '', url);
+}
+function aplicarHash(){
+  const [view, codigo] = location.hash.replace(/^#/, '').split('/');
+  if(codigo){
+    const i = getDataset(state.ano).findIndex(m => String(m.codigo) === codigo);
+    if(i >= 0) state.municipioIdx = i;
+    popularSelectMunicipios(getDataset(state.ano));
+  }
+  setView(TITULOS_VIEW[view] ? view : 'inicio', {semHistorico:true});
+}
+window.addEventListener('popstate', aplicarHash);
+
+function setView(view, {semHistorico=false} = {}){
   currentView = view;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+view).classList.add('active');
-  document.querySelectorAll('.nav-item, .hero-nav-btn').forEach(b=>b.classList.toggle('active', b.dataset.view===view));
-  const titles = {inicio:'Tela Inicial', apresentacao:'Apresentação', dashboard:'Dashboard', relatorios:'Relatórios', comparacoes:'Comparações'};
-  document.getElementById('pageTitle').textContent = titles[view] || '';
+  document.querySelectorAll('.nav-item, .hero-nav-btn').forEach(b=>{
+    const ativo = b.dataset.view===view;
+    b.classList.toggle('active', ativo);
+    if(ativo) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+  });
+  document.getElementById('pageTitle').textContent = TITULOS_VIEW[view] || '';
+  document.title = `${TITULOS_VIEW[view] || 'SaneData'} · SaneData — Saneamento & Saúde Pública em PE`;
   closeMobileMenu();
+  if(!semHistorico) atualizarHash(false);
+  window.scrollTo(0, 0);
   renderCurrentView();
 }
 
-document.getElementById('nav').addEventListener('click', (e)=>{
-  const btn = e.target.closest('.nav-item');
+/* qualquer elemento com data-view (menu lateral, atalhos da Tela Inicial) ou
+   data-view-link (links dentro do texto, rodapé) troca de tela */
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.nav-item, .hero-nav-btn, [data-view-link]');
   if(!btn || btn.classList.contains('disabled')) return;
-  setView(btn.dataset.view);
+  setView(btn.dataset.view || btn.dataset.viewLink);
 });
 
-document.getElementById('heroNav').addEventListener('click', (e)=>{
-  const btn = e.target.closest('.hero-nav-btn');
-  if(!btn || btn.classList.contains('disabled')) return;
-  setView(btn.dataset.view);
+/* abre o Perfil de um município a partir de qualquer lista/tabela com data-codigo */
+function abrirPerfilPorCodigo(codigo){
+  const i = getDataset(state.ano).findIndex(m => m.codigo === Number(codigo));
+  if(i < 0) return;
+  state.municipioIdx = i;
+  popularSelectMunicipios(getDataset(state.ano));
+  setView('perfil');
+}
+document.addEventListener('click', (e)=>{
+  const linha = e.target.closest('tr.linha-clicavel[data-codigo]');
+  if(linha) abrirPerfilPorCodigo(linha.dataset.codigo);
 });
 
 /* ============ MENU MOBILE ============ */
@@ -177,6 +231,43 @@ ligarBuscaMunicipio(document.getElementById('selCompB'), (m, data)=>{
   renderComparacoes();
 });
 
+/* ============ FILTROS — SÉRIES HISTÓRICAS ============ */
+document.getElementById('selSerieIndicador').addEventListener('change', (e)=>{
+  state.serieIndicador = e.target.value;
+  state.serieDe = state.serieAte = null; // cada indicador tem cobertura diferente — recalcula o período padrão
+  renderSeries();
+});
+document.getElementById('selSerieDe').addEventListener('change', (e)=>{ state.serieDe = Number(e.target.value); renderSeries(); });
+document.getElementById('selSerieAte').addEventListener('change', (e)=>{ state.serieAte = Number(e.target.value); renderSeries(); });
+
+/* ============ AÇÕES — PERFIL DO MUNICÍPIO ============ */
+/* feedback curto no próprio botão (em vez de alert(), que trava a página) */
+function confirmarNoBotao(btn, texto){
+  const original = btn.textContent;
+  btn.textContent = texto;
+  btn.disabled = true;
+  setTimeout(()=>{ btn.textContent = original; btn.disabled = false; }, 1800);
+}
+async function copiarTexto(texto, btn){
+  try{ await navigator.clipboard.writeText(texto); confirmarNoBotao(btn, '✓ Copiado'); }
+  catch(e){ confirmarNoBotao(btn, 'Não foi possível copiar'); }
+}
+document.getElementById('perfilCabecalho').addEventListener('click', (e)=>{
+  const btn = e.target.closest('[data-acao-perfil]');
+  if(!btn) return;
+  const acao = btn.dataset.acaoPerfil;
+  if(acao === 'imprimir') window.print();
+  if(acao === 'copiar') copiarTexto(location.href, btn);
+  if(acao === 'comparar'){
+    state.compA = state.municipioIdx;
+    if(state.compB === state.compA) state.compB = state.compA === 0 ? 1 : 0;
+    setView('comparacoes');
+  }
+});
+document.getElementById('btnCopiarCitacao').addEventListener('click', (e)=>{
+  copiarTexto(document.getElementById('citacao').textContent.trim(), e.currentTarget);
+});
+
 /* ============ EXPORTAÇÃO — RELATÓRIOS ============ */
 document.getElementById('btnExportCSV').addEventListener('click', exportarCSV);
 document.getElementById('btnExportExcel').addEventListener('click', exportarExcel);
@@ -230,6 +321,7 @@ btnAtualizarDados.addEventListener('click', async ()=>{
     renderDashboard();
     renderRelatorios();
     renderComparacoes();
+    atualizarVersaoDados();
 
     const agora = new Date().toLocaleTimeString('pt-BR');
     heroAtualizarStatus.textContent = `Dados atualizados às ${agora} — Dashboard, Relatórios e Comparações recarregados.`;
@@ -242,6 +334,13 @@ btnAtualizarDados.addEventListener('click', async ()=>{
 });
 
 /* ============ INIT ============ */
+/* data de geração do painel_pe.json no rodapé — quem lê um número sabe de quando ele é */
+function atualizarVersaoDados(){
+  const host = document.getElementById('rodapeVersao');
+  if(!host || !PAINEL || !PAINEL.geradoEm) return;
+  host.textContent = new Date(PAINEL.geradoEm).toLocaleDateString('pt-BR');
+}
+
 function popularSelectAnos(){
   const sel = document.getElementById('selAno');
   clear(sel);
@@ -278,6 +377,8 @@ async function iniciar(){
   await carregarPontosAtencao(); // opcional — sem arquivo/pontos ainda não é erro, ver js/geo.js
   popularSelectAnos();
   popularSelectMunicipios(getDataset(state.ano));
+  atualizarVersaoDados();
   heroErro.innerHTML = '';
+  if(location.hash) aplicarHash(); // link compartilhado (#dashboard, #perfil/<código IBGE>...) abre direto na tela
 }
 iniciar();

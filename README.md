@@ -17,6 +17,18 @@ Painel interativo para priorização de investimentos em saneamento e saúde pú
 - **Relatórios** — ranking completo do ano com investimento em saneamento
   por município e exportação em CSV, Excel, imagem e impressão/PDF.
 - **Comparações** — dois municípios lado a lado.
+- **Perfil do Município** — ficha técnica de um município (indicadores do ano
+  com média estadual e da mesorregião, posição, variação anual, trajetória
+  2015-2024, pontos de atenção), imprimível e com link próprio
+  (`#perfil/<código IBGE>`).
+- **Séries Históricas** — evolução estadual de cada indicador (mediana, faixa
+  interquartil, média por mesorregião) e maiores melhoras/pioras entre dois anos.
+- **Metodologia & Dados** — fórmula do índice, pesos e robustez do ranking
+  entre esquemas, dicionário de indicadores, cobertura de dado por ano, dados
+  abertos para download e referência para citação.
+
+Cada tela tem endereço próprio (`#dashboard`, `#series`...), então links podem
+ser compartilhados e o botão "voltar" do navegador funciona.
 
 ## Estrutura
 
