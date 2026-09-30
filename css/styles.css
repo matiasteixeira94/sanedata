@@ -439,6 +439,23 @@ html[data-theme="dark"] .sidebar{ background:#180208; }
   .panel, .card{ box-shadow:none; border:1px solid #ccc; break-inside:avoid; }
 }
 
+/* ============ ABAS (Dashboard) ============ */
+.abas{
+  display:flex; gap:4px; border-bottom:2px solid var(--border); margin:4px 0 20px; overflow-x:auto;
+  position:sticky; top:77px; z-index:4; background:var(--bg); padding-top:6px;
+}
+.aba{
+  background:none; border:none; border-bottom:3px solid transparent; margin-bottom:-2px;
+  padding:10px 16px; font-weight:600; font-size:14px; color:var(--text-muted); cursor:pointer; white-space:nowrap;
+}
+.aba:hover{ color:var(--bordo); }
+.aba.ativa{ color:var(--bordo); border-bottom-color:var(--bordo); }
+.aba-painel{ display:none; }
+.aba-painel.ativa{ display:block; }
+.aba-painel > .secao-divisor:first-child{ margin-top:0; padding-top:0; border-top:none; }
+@media (max-width: 780px){ .abas{ position:static; } }
+@media print{ .abas{ display:none !important; } .aba-painel{ display:block !important; } }
+
 /* ============ LAYOUT DE APOIO DAS TELAS NOVAS ============ */
 .panel-titulo{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
 .panel-titulo h2{ margin-bottom:0 !important; }

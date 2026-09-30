@@ -311,10 +311,16 @@
 
       <div class="cards-row" id="cardsDashboard"></div>
 
+      <div class="abas" role="tablist" aria-label="Seções do Dashboard" id="abasDashboard">
+        <button class="aba ativa" role="tab" type="button" data-aba="priorizacao" aria-selected="true">Priorização</button>
+        <button class="aba" role="tab" type="button" data-aba="investimento" aria-selected="false">Investimento e correlações</button>
+        <button class="aba" role="tab" type="button" data-aba="foco" aria-selected="false">Município em foco</button>
+      </div>
+      <div class="aba-painel ativa" data-aba="priorizacao" role="tabpanel">
       <div class="grid-2">
         <div class="panel">
           <h2>Ranking de priorização <span class="hint" id="rankingHint">— do município que mais precisa de investimento para o que menos precisa</span></h2>
-          <p class="hint" style="display:block; margin-bottom:8px">Clique em um município da lista para ver os dados dele em "Município em foco", mais abaixo. Clique numa barra da distribuição ou da mesorregião, ao lado, pra filtrar esta lista.</p>
+          <p class="hint" style="display:block; margin-bottom:8px">Clique em um município da lista para selecioná-lo no painel inteiro (os dados dele aparecem na aba "Município em foco" e no Perfil). Clique numa barra da distribuição ou da mesorregião, ao lado, pra filtrar esta lista.</p>
           <div id="filtroRankingBar"></div>
           <div id="rankingList" class="ranking-list"></div>
         </div>
@@ -346,7 +352,7 @@
             <div class="mapa-tooltip" id="mapaTooltip"></div>
           </div>
           <div class="mapa-legenda" id="mapaLegenda"></div>
-          <p class="hint" style="display:block; margin-top:8px">Clique em um município no mapa para ver os dados dele em "Município em foco", mais abaixo.</p>
+          <p class="hint" style="display:block; margin-top:8px">Clique em um município no mapa para selecioná-lo no painel inteiro (aba "Município em foco" e Perfil).</p>
 
           <div class="pontos-atencao-bar">
             <button class="btn-export" id="btnModoCuradoria">📍 Modo curadoria: adicionar ponto de atenção</button>
@@ -381,6 +387,9 @@
         </div>
       </div>
 
+      </div>
+
+      <div class="aba-painel" data-aba="investimento" role="tabpanel">
       <div class="panel panel-wide">
         <h2>Investimento em saneamento por município <span class="hint">— top 15, R$ de <span class="precos-ref">2024</span> por 100 mil habitantes (corrigido pelo IPCA), água+esgoto, 2015-2022</span></h2>
         <svg id="chartInvestimentoDashboard" viewBox="0 0 900 460" role="img" aria-label="Gráfico de colunas verticais do investimento em saneamento dos municípios com maior investimento, separado por entidade executora, com o valor em cima de cada coluna"></svg>
@@ -401,6 +410,9 @@
         <div id="matrizCorrelacao"></div>
       </div>
 
+      </div>
+
+      <div class="aba-painel" data-aba="foco" role="tabpanel">
       <div class="secao-divisor">
         <h2>Município em foco <span class="hint">— use o seletor de Município/Ano no topo da página; os dois campos abaixo só afetam esta seção</span></h2>
         <button class="btn-export" type="button" data-view-link="perfil" style="margin-top:10px">Abrir ficha completa do município →</button>
@@ -457,6 +469,7 @@
           <h2>Dispersão — déficit × indicador de saúde <span class="hint" id="corrChartHint">— todos os municípios de PE, no ano selecionado</span></h2>
           <svg id="chartCorrelacaoDispersao" viewBox="0 0 420 230" role="img" aria-label="Gráfico de dispersão do déficit de saneamento contra o indicador de saúde selecionado, um ponto por município, com linha de tendência e o município selecionado destacado"></svg>
         </div>
+      </div>
       </div>
     </section>
 

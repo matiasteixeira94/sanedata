@@ -26,6 +26,7 @@ function hashDaView(view){
     const m = getDataset(state.ano)[state.municipioIdx];
     return m ? `#perfil/${m.codigo}` : '#perfil';
   }
+  if(view === 'dashboard' && state.abaDashboard !== 'priorizacao') return `#dashboard/${state.abaDashboard}`;
   return view === 'inicio' ? '#' : '#'+view;
 }
 function atualizarHash(substituir){
@@ -37,7 +38,8 @@ function atualizarHash(substituir){
 }
 function aplicarHash(){
   const [view, codigo] = location.hash.replace(/^#/, '').split('/');
-  if(codigo){
+  if(view === 'dashboard') selecionarAbaDashboard(ABAS_DASHBOARD.includes(codigo) ? codigo : 'priorizacao');
+  else if(codigo){
     const i = getDataset(state.ano).findIndex(m => String(m.codigo) === codigo);
     if(i >= 0) state.municipioIdx = i;
     popularSelectMunicipios(getDataset(state.ano));
@@ -246,6 +248,27 @@ ligarBuscaMunicipio(document.getElementById('selCompA'), (m, data)=>{
 ligarBuscaMunicipio(document.getElementById('selCompB'), (m, data)=>{
   state.compB = data.indexOf(m);
   renderComparacoes();
+});
+
+/* ============ ABAS DO DASHBOARD ============
+   Só escondem/mostram blocos — tudo continua sendo calculado no renderDashboard, então
+   trocar de aba é instantâneo e um filtro aplicado numa aba vale ao voltar para ela.
+   Distribuição e mesorregião ficam na mesma aba do ranking porque clicar nelas filtra o ranking. */
+const ABAS_DASHBOARD = ['priorizacao','investimento','foco'];
+function selecionarAbaDashboard(aba){
+  state.abaDashboard = aba;
+  document.querySelectorAll('#abasDashboard .aba').forEach(b=>{
+    const ativa = b.dataset.aba === aba;
+    b.classList.toggle('ativa', ativa);
+    b.setAttribute('aria-selected', String(ativa));
+  });
+  document.querySelectorAll('#view-dashboard .aba-painel').forEach(p=>p.classList.toggle('ativa', p.dataset.aba === aba));
+}
+document.getElementById('abasDashboard').addEventListener('click', (e)=>{
+  const btn = e.target.closest('[data-aba]');
+  if(!btn) return;
+  selecionarAbaDashboard(btn.dataset.aba);
+  atualizarHash(true);
 });
 
 /* ============ RÉGUA DO GRÁFICO DE EVOLUÇÃO (Dashboard) ============ */
