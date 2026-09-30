@@ -286,6 +286,32 @@ document.getElementById('btnCopiarCitacao').addEventListener('click', (e)=>{
   copiarTexto(document.getElementById('citacao').textContent.trim(), e.currentTarget);
 });
 
+/* ============ EXPORTAÇÃO — COMPARAÇÕES, SÉRIES E PERFIL ============ */
+function municipioAtual(){ return getDataset(state.ano)[state.municipioIdx]; }
+document.getElementById('btnCompCSV').addEventListener('click', ()=>{
+  const d = getDataset(state.ano), A = d[state.compA], B = d[state.compB];
+  exportarTabelasCSV([{id:'tabelaComparacao'}], `sanedata_comparacao_${slugArquivo(A.nome)}_x_${slugArquivo(B.nome)}_${state.ano}.csv`);
+});
+document.getElementById('btnCompPNG').addEventListener('click', ()=>{
+  exportarImagemSVG('chartCompSaneamento', `sanedata_comparacao_saneamento_${state.ano}.png`);
+  exportarImagemSVG('chartCompSaude', `sanedata_comparacao_saude_${state.ano}.png`);
+});
+document.getElementById('btnSerieCSV').addEventListener('click', ()=>{
+  exportarTabelasCSV([
+    {id:'tabelaSerieEstado', titulo:`${LABELS[state.serieIndicador]} — Pernambuco, por ano`},
+    {id:'tabelaSerieMelhoras', titulo:`Maiores melhoras ${state.serieDe}-${state.serieAte}`},
+    {id:'tabelaSeriePioras', titulo:`Maiores pioras ${state.serieDe}-${state.serieAte}`},
+  ], `sanedata_serie_${state.serieIndicador}.csv`);
+});
+document.getElementById('btnSeriePNG').addEventListener('click', ()=>{
+  exportarImagemSVG('chartSerieEstado', `sanedata_serie_${state.serieIndicador}_estado.png`);
+  exportarImagemSVG('chartSerieMeso', `sanedata_serie_${state.serieIndicador}_mesorregioes.png`);
+});
+document.getElementById('btnPerfilCSV').addEventListener('click', ()=>{
+  const m = municipioAtual();
+  exportarTabelasCSV([{id:'tabelaPerfil', titulo:`${m.nome}-${m.uf} — ${state.ano}`}], `sanedata_perfil_${slugArquivo(m.nome)}_${state.ano}.csv`);
+});
+
 /* ============ EXPORTAÇÃO — RELATÓRIOS ============ */
 document.getElementById('btnExportCSV').addEventListener('click', exportarCSV);
 document.getElementById('btnExportExcel').addEventListener('click', exportarExcel);

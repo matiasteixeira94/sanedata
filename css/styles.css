@@ -440,6 +440,9 @@ html[data-theme="dark"] .sidebar{ background:#180208; }
 }
 
 /* ============ LAYOUT DE APOIO DAS TELAS NOVAS ============ */
+.panel-titulo{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+.panel-titulo h2{ margin-bottom:0 !important; }
+@media print{ .panel-titulo .btn-export, .panel-titulo .actions-row{ display:none !important; } }
 .grid-2.grid-2-iguais{ grid-template-columns:1fr 1fr; }
 .field.field-ano{ min-width:110px; }
 .field.field-ano select{ min-width:110px; }

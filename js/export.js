@@ -77,3 +77,27 @@ function exportarImagemSVG(svgId, nomeArquivo){
   };
   img.src = url;
 }
+
+/* exporta uma ou mais tabelas já renderizadas na tela para CSV (;, BOM para o Excel) —
+   o CSV sai exatamente com o que o usuário está vendo, inclusive "—" como célula vazia.
+   Tabelas diferentes no mesmo arquivo ficam separadas por uma linha com o título delas. */
+function exportarTabelasCSV(tabelas, nomeArquivo){
+  const celula = (td) => {
+    const txt = td.innerText.replace(/\s+/g,' ').trim();
+    if(txt === '—') return '';
+    return /[;"\n]/.test(txt) ? `"${txt.replace(/"/g,'""')}"` : txt;
+  };
+  const blocos = tabelas.map(({id, titulo})=>{
+    const tabela = document.getElementById(id);
+    if(!tabela) return '';
+    const linhas = [...tabela.rows].map(tr => [...tr.cells].map(celula).join(';'));
+    return (titulo ? titulo + '\n' : '') + linhas.join('\n');
+  }).filter(Boolean);
+  const csv = String.fromCharCode(0xFEFF) + blocos.join('\n\n');
+  baixarBlob(new Blob([csv], {type:'text/csv;charset=utf-8'}), nomeArquivo);
+}
+
+/* nome de arquivo seguro a partir de um nome de município ("São José do Egito" → "sao_jose_do_egito") */
+function slugArquivo(s){
+  return normalizarBusca(s).replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+}

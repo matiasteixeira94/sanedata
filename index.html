@@ -462,7 +462,10 @@
       <div class="cards-row" id="cardsPerfil"></div>
 
       <div class="panel panel-wide">
-        <h2>Indicadores do município <span class="hint" id="perfilTabelaHint"></span></h2>
+        <div class="panel-titulo">
+          <h2>Indicadores do município <span class="hint" id="perfilTabelaHint"></span></h2>
+          <button class="btn-export" type="button" id="btnPerfilCSV">Baixar indicadores (CSV)</button>
+        </div>
         <div class="table-scroll">
           <table class="tabela-relatorio tabela-perfil" id="tabelaPerfil"></table>
         </div>
@@ -517,7 +520,13 @@
       <div class="cards-row" id="cardsSeries"></div>
 
       <div class="panel panel-wide">
-        <h2>Pernambuco — distribuição dos municípios ao longo do tempo <span class="hint" id="serieEstadoHint"></span></h2>
+        <div class="panel-titulo">
+          <h2>Pernambuco — distribuição dos municípios ao longo do tempo <span class="hint" id="serieEstadoHint"></span></h2>
+          <div class="actions-row">
+            <button class="btn-export" type="button" id="btnSerieCSV">Baixar série e variações (CSV)</button>
+            <button class="btn-export" type="button" id="btnSeriePNG">Baixar gráficos (imagem)</button>
+          </div>
+        </div>
         <svg id="chartSerieEstado" viewBox="0 0 900 260" role="img" aria-label="Gráfico de linha com a mediana, a média e a faixa interquartil do indicador selecionado entre os municípios de Pernambuco, ano a ano"></svg>
         <div class="mapa-legenda" id="legendaSerieEstado"></div>
         <details class="tabela-alternativa">
@@ -669,7 +678,13 @@
       </div>
 
       <div class="panel panel-wide">
-        <h2>Tabela comparativa</h2>
+        <div class="panel-titulo">
+          <h2>Tabela comparativa</h2>
+          <div class="actions-row">
+            <button class="btn-export" type="button" id="btnCompCSV">Baixar tabela (CSV)</button>
+            <button class="btn-export" type="button" id="btnCompPNG">Baixar gráficos (imagem)</button>
+          </div>
+        </div>
         <div class="table-scroll">
           <table class="tabela-relatorio" id="tabelaComparacao"></table>
         </div>
