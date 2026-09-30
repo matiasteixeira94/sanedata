@@ -382,7 +382,7 @@
       </div>
 
       <div class="panel panel-wide">
-        <h2>Investimento em saneamento por município <span class="hint">— top 15, R$ por 100 mil habitantes, água+esgoto, 2015-2022</span></h2>
+        <h2>Investimento em saneamento por município <span class="hint">— top 15, R$ de <span class="precos-ref">2024</span> por 100 mil habitantes (corrigido pelo IPCA), água+esgoto, 2015-2022</span></h2>
         <svg id="chartInvestimentoDashboard" viewBox="0 0 900 460" role="img" aria-label="Gráfico de colunas verticais do investimento em saneamento dos municípios com maior investimento, separado por entidade executora, com o valor em cima de cada coluna"></svg>
         <div class="mapa-legenda">
           <span class="legenda-item"><span class="legenda-swatch" style="background:var(--bordo)"></span>Prestador</span>
@@ -393,7 +393,7 @@
           <summary>Ver dados em tabela</summary>
           <div class="table-scroll"><table class="tabela-relatorio" id="tabelaInvestimentoDashboard"></table></div>
         </details>
-        <p class="scope-note">Investimento total realizado pelo prestador de serviço, pelo município e pelo estado em abastecimento de água e esgotamento sanitário (SNIS via Base dos Dados, ver <code>data/scripts/04d_snis_investimento.py</code>). Mostra o município se pelo menos uma das 3 séries tiver dado; série sem valor não aparece na barra nem soma como zero. Município/estado costumam ficar sem valor pra maioria dos municípios de PE — reflete que a COMPESA (prestador estadual) concentra quase todo o investimento, não falha de coleta. Não cobre resíduos sólidos nem 2023-2024 (SNIS foi descontinuado em 2024, sem fonte automatizada equivalente para investimento no SINISA) — valores em R$ nominais, sem correção monetária entre anos.</p>
+        <p class="scope-note">Investimento total realizado pelo prestador de serviço, pelo município e pelo estado em abastecimento de água e esgotamento sanitário (SNIS via Base dos Dados, ver <code>data/scripts/04d_snis_investimento.py</code>). Mostra o município se pelo menos uma das 3 séries tiver dado; série sem valor não aparece na barra nem soma como zero. Município/estado costumam ficar sem valor pra maioria dos municípios de PE — reflete que a COMPESA (prestador estadual) concentra quase todo o investimento, não falha de coleta. Não cobre resíduos sólidos nem 2023-2024 (SNIS foi descontinuado em 2024, sem fonte automatizada equivalente para investimento no SINISA) — valores corrigidos pela inflação (IPCA, média anual do índice) para R$ de <span class="precos-ref">2024</span>, então anos diferentes são comparáveis (ver Metodologia &amp; Dados).</p>
       </div>
 
       <div class="panel panel-wide">
@@ -501,7 +501,7 @@
               <option value="taxaDiarreia">Diarreia aguda</option>
             </optgroup>
             <optgroup label="Investimento">
-              <option value="investimentoTotalPer100k">Investimento em saneamento (R$/100 mil hab.)</option>
+              <option value="investimentoTotalPer100k">Investimento em saneamento (R$ corrigidos/100 mil hab.)</option>
             </optgroup>
           </select>
         </div>
@@ -627,7 +627,7 @@
       </div>
 
       <div class="panel panel-wide">
-        <h2>Investimento em saneamento por município <span class="hint">— top 15, R$ por 100 mil habitantes, água+esgoto, 2015-2022</span></h2>
+        <h2>Investimento em saneamento por município <span class="hint">— top 15, R$ de <span class="precos-ref">2024</span> por 100 mil habitantes (corrigido pelo IPCA), água+esgoto, 2015-2022</span></h2>
         <svg id="chartInvestimentoRelatorio" viewBox="0 0 900 460" role="img" aria-label="Gráfico de colunas verticais do investimento em saneamento dos municípios com maior investimento, separado por entidade executora, com o valor em cima de cada coluna"></svg>
         <div class="mapa-legenda">
           <span class="legenda-item"><span class="legenda-swatch" style="background:var(--bordo)"></span>Prestador</span>
@@ -638,7 +638,7 @@
           <summary>Ver dados em tabela</summary>
           <div class="table-scroll"><table class="tabela-relatorio" id="tabelaInvestimentoRelatorio"></table></div>
         </details>
-        <p class="scope-note">Investimento total realizado pelo prestador de serviço, pelo município e pelo estado em abastecimento de água e esgotamento sanitário (SNIS via Base dos Dados, ver <code>data/scripts/04d_snis_investimento.py</code>). Mostra o município se pelo menos uma das 3 séries tiver dado; série sem valor não aparece na barra nem soma como zero. Município/estado costumam ficar sem valor pra maioria dos municípios de PE — reflete que a COMPESA (prestador estadual) concentra quase todo o investimento, não falha de coleta. Não cobre resíduos sólidos nem 2023-2024 — valores em R$ nominais, sem correção monetária entre anos.</p>
+        <p class="scope-note">Investimento total realizado pelo prestador de serviço, pelo município e pelo estado em abastecimento de água e esgotamento sanitário (SNIS via Base dos Dados, ver <code>data/scripts/04d_snis_investimento.py</code>). Mostra o município se pelo menos uma das 3 séries tiver dado; série sem valor não aparece na barra nem soma como zero. Município/estado costumam ficar sem valor pra maioria dos municípios de PE — reflete que a COMPESA (prestador estadual) concentra quase todo o investimento, não falha de coleta. Não cobre resíduos sólidos nem 2023-2024 — valores corrigidos pela inflação (IPCA, média anual do índice) para R$ de <span class="precos-ref">2024</span>, então anos diferentes são comparáveis (ver Metodologia &amp; Dados).</p>
       </div>
 
       <div class="panel panel-wide">
@@ -735,7 +735,7 @@
               <tr><td>Dengue</td><td>Casos notificados por 100 mil habitantes</td><td>/100 mil hab.</td><td>DATASUS / SINAN</td><td>2015-2024</td><td>Sim</td></tr>
               <tr><td>Chikungunya</td><td>Casos notificados por 100 mil habitantes</td><td>/100 mil hab.</td><td>DATASUS / SINAN</td><td>2015-2024</td><td>Sim</td></tr>
               <tr><td>Diarreia aguda</td><td>Internações por doenças infecciosas intestinais (CID-10 A00-A09) por 100 mil hab. — proxy</td><td>/100 mil hab.</td><td>DATASUS / SIH-SUS</td><td>2015-2024</td><td>Sim</td></tr>
-              <tr><td>Investimento em saneamento</td><td>Investimento realizado em água e esgoto por prestador, município e estado (R$ nominais)</td><td>R$/100 mil hab.</td><td>SNIS (Base dos Dados)</td><td>2015-2022</td><td>Não (contexto)</td></tr>
+              <tr><td>Investimento em saneamento</td><td>Investimento realizado em água e esgoto por prestador, município e estado, corrigido pelo IPCA para R$ de <span class="precos-ref">2024</span> (fator = IPCA médio do ano de referência ÷ IPCA médio do ano)</td><td>R$/100 mil hab.</td><td>SNIS (Base dos Dados); IPCA: IBGE/SIDRA 1737</td><td>2015-2022</td><td>Não (contexto)</td></tr>
               <tr><td>População</td><td>Estimativa populacional usada como denominador das taxas</td><td>habitantes</td><td>IBGE (SIDRA, agregado 6579)</td><td>2015-2024</td><td>—</td></tr>
             </tbody>
           </table>

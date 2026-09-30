@@ -72,6 +72,22 @@ def main():
     if investimento is not None:
         base = base.merge(investimento, on=["codigo_ibge", "ano"], how="left")
 
+    # correção monetária do investimento para R$ do ano de referência (IPCA, ver
+    # 04e_ibge_ipca.py). Sem o arquivo do IPCA, o investimento fica null — nunca
+    # publicamos valor nominal como se fosse corrigido.
+    ipca = carregar_opcional("ipca_anual.csv")
+    ano_ref_ipca = None
+    cols_invest = ["investimentoPrestador", "investimentoMunicipio", "investimentoEstado"]
+    if ipca is not None and investimento is not None:
+        ano_ref_ipca = int(ipca["ano_ref"].iloc[0])
+        base = base.merge(ipca[["ano", "fator_para_ref"]], on="ano", how="left")
+        for col in cols_invest:
+            base[col] = base[col] * base["fator_para_ref"]  # ano sem fator -> NaN -> null
+    elif investimento is not None:
+        print("  aviso: ipca_anual.csv ausente — rode 04e_ibge_ipca.py; investimento ficará nulo")
+        for col in cols_invest:
+            base[col] = None
+
     # Em anos com cobertura completa da fonte, "sem notificação" é um zero
     # real (SINAN/SIH são censitários) — preenche só nesses anos, para não
     # confundir "zero casos" com "ano ainda não baixado" nos demais.
@@ -126,7 +142,10 @@ def main():
             "saude": "DATASUS/SINAN (dengue, chikungunya) e SIH-SUS (internações por doenças infecciosas intestinais A00-A09, proxy de diarreia aguda)",
             "saneamento": "SINISA/SNIS (Ministério das Cidades) — importação manual, ver data/scripts/04_sinisa_saneamento.py",
             "investimento": "SNIS via Base dos Dados (basedosdados.br_mdr_snis) — investimento total em água+esgoto por entidade executora (prestador/município/estado), 2015-2022, ver data/scripts/04d_snis_investimento.py",
+            "correcaoMonetaria": "IBGE/SIDRA tabela 1737 (IPCA, média anual do número-índice) — ver data/scripts/04e_ibge_ipca.py",
         },
+        # ano cujos preços o investimento está expresso (null = sem correção disponível)
+        "investimentoPrecosDe": ano_ref_ipca,
         "geradoEm": pd.Timestamp.utcnow().isoformat(),
         "municipios": registros,
     }

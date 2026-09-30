@@ -32,6 +32,7 @@ PASSOS = [
     "04b_sinisa_dashboard_publico.py",
     "04c_sinisa_dashboard_publico_esgoto_residuos.py",
     "04d_snis_investimento.py",
+    "04e_ibge_ipca.py",
     "05_build_painel.py",
     "06_ibge_malha_municipios.py",
 ]

@@ -20,6 +20,8 @@ de novo para regenerar). Arquivos:
   só existem depois do passo manual de importação do SINISA (04) — até lá
   ficam `null`. Os dois scripts fazem merge entre si (nenhum sobrescreve o
   que o outro já preencheu).
+- `ipca_anual.csv` — IPCA médio por ano e fator de correção para R$ do
+  ano de referência (04e), usado pelo 05 para corrigir o investimento.
 - `investimento_saneamento_pe.csv` — investimento total (R$ nominais) em
   água+esgoto por município/ano, desagregado por entidade executora
   (prestador/município/estado), vindo da Base dos Dados via BigQuery (04d,

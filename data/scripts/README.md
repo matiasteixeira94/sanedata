@@ -254,10 +254,20 @@ antes de escrever o script (não presumido).
 Mesmas limitações do 04a, por ser a mesma fonte: só água+esgoto (não existe
 indicador financeiro de resíduos sólidos nesta tabela nem em nenhuma outra do
 dataset `br_mdr_snis`), só até 2022 (SNIS descontinuado, sem passo manual
-equivalente para preencher 2023-2024 de investimento). Valores em R$
-nominais, sem correção monetária — comparar anos diferentes sem deflacionar
-é uma limitação metodológica a documentar na tese, não algo que o script
-corrija.
+equivalente para preencher 2023-2024 de investimento). O CSV guarda R$
+nominais; a correção monetária é feita no 05 com o fator do 04e (abaixo).
+
+### 04e — IPCA para correção monetária do investimento — automatizado
+
+`python 04e_ibge_ipca.py` baixa o IPCA número-índice mensal (IBGE/SIDRA,
+tabela 1737, variável 2266), calcula a média de cada ano e grava
+`data/processed/ipca_anual.csv` com o fator
+`IPCA_médio(ANO_FIM) ÷ IPCA_médio(ano)`. O 05 multiplica o investimento de
+cada ano por esse fator, então o `painel_pe.json` traz investimento em R$ do
+ano de referência (campo `investimentoPrecosDe`). Usa a média anual (e não
+dezembro) porque o investimento é executado ao longo do ano. Sem o arquivo
+do IPCA, o 05 grava investimento `null` em vez de publicar valor nominal
+como se fosse corrigido.
 
 Mesmo requisito do 04a (`pip install basedosdados`, projeto Google Cloud via
 `--billing-project`/`BD_BILLING_PROJECT_ID`, passo pulado sem quebrar o

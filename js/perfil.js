@@ -100,7 +100,7 @@ function renderPerfil(){
     <div class="card accent-verde">
       <span class="card-label">Investimento em saneamento</span>
       <span class="card-value">${invest===null ? '—' : 'R$ '+fmtMoedaCompacta(invest)}</span>
-      <span class="card-sub">${invest===null ? 'sem dado no ano (série cobre 2015-2022)' : 'por 100 mil hab. · prestador + município + estado'}</span>
+      <span class="card-sub">${invest===null ? 'sem dado no ano (série cobre 2015-2022)' : `R$ de ${PAINEL.investimentoPrecosDe || '—'} por 100 mil hab. · prestador + município + estado`}</span>
     </div>`;
 
   /* --- tabela de indicadores --- */

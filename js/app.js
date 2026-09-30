@@ -380,6 +380,8 @@ btnAtualizarDados.addEventListener('click', async ()=>{
 /* ============ INIT ============ */
 /* data de geração do painel_pe.json no rodapé — quem lê um número sabe de quando ele é */
 function atualizarVersaoDados(){
+  // ano dos preços do investimento (correção pelo IPCA feita no pipeline, ver data/scripts/04e)
+  if(PAINEL && PAINEL.investimentoPrecosDe) document.querySelectorAll('.precos-ref').forEach(n => n.textContent = PAINEL.investimentoPrecosDe);
   const host = document.getElementById('rodapeVersao');
   if(!host || !PAINEL || !PAINEL.geradoEm) return;
   host.textContent = new Date(PAINEL.geradoEm).toLocaleDateString('pt-BR');
