@@ -40,3 +40,17 @@ ser compartilhados e o botão "voltar" do navegador funciona.
 - `data/scripts/` — scripts de coleta e processamento dos dados.
 - `data/processed/` — dados tratados consumidos pela aplicação.
 - `docs/` — memorial descritivo, decisões de metodologia e notas para a dissertação.
+- `tests/` — testes do cálculo do índice, das estatísticas e da integridade dos dados.
+
+## Testes
+
+```
+node --test
+```
+
+Sem dependências (executor nativo do Node 18+). Carregam os mesmos arquivos de
+`js/` que o navegador usa e verificam: estatística e índice com dados sintéticos
+de resultado conhecido, integridade de `data/processed/painel_pe.json` e uma
+regressão com os dados reais (valores conferidos na versão atual — se o pipeline
+trouxer dado novo, atualize o esperado depois de conferir a diferença). Rodam
+automaticamente no GitHub a cada push (`.github/workflows/testes.yml`).
