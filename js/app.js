@@ -93,16 +93,32 @@ function closeMobileMenu(){ sidebar.classList.remove('open'); overlay.classList.
 btnMenu.addEventListener('click', ()=> sidebar.classList.contains('open') ? closeMobileMenu() : openMobileMenu());
 overlay.addEventListener('click', closeMobileMenu);
 
-/* ============ TEMA CLARO/ESCURO (estado em memória, sem localStorage) ============ */
+/* ============ TEMA CLARO/ESCURO ============
+   O tema inicial (escolha salva ou tema do sistema) é aplicado por um script no <head>,
+   antes do primeiro desenho. Aqui: botão de troca, que salva a escolha, e o seguimento
+   do tema do sistema enquanto o usuário não tiver escolhido um. localStorage pode estar
+   bloqueado (aba anônima, política do navegador) — sem ele, o tema só não é lembrado. */
 const btnTheme = document.getElementById('btnTheme');
+function aplicarTema(tema){
+  document.documentElement.setAttribute('data-theme', tema);
+  const escuro = tema === 'dark';
+  document.getElementById('themeIcon').textContent = escuro ? '☀️' : '🌙';
+  document.getElementById('themeLabel').textContent = escuro ? 'Tema claro' : 'Tema escuro';
+  btnTheme.setAttribute('aria-pressed', String(escuro));
+  if(PAINEL) renderCurrentView(); // mapa e ranking calculam cores a partir dos tokens do tema atual
+}
+function temaSalvo(){ try{ return localStorage.getItem('sanedata-tema'); }catch(e){ return null; } }
 btnTheme.addEventListener('click', ()=>{
-  const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme') === 'dark';
-  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
-  document.getElementById('themeLabel').textContent = isDark ? 'Tema escuro' : 'Tema claro';
-  btnTheme.setAttribute('aria-pressed', String(!isDark));
+  const novo = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  try{ localStorage.setItem('sanedata-tema', novo); }catch(e){}
+  aplicarTema(novo);
 });
+if(window.matchMedia){
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e)=>{
+    if(!temaSalvo()) aplicarTema(e.matches ? 'dark' : 'light');
+  });
+}
+aplicarTema(document.documentElement.getAttribute('data-theme') || 'light'); // sincroniza o rótulo do botão com o tema do <head>
 
 /* ============ FILTROS — ANO (global) E INDICADOR/COMPONENTE (Dashboard) ============ */
 ['selAno','selIndicador','selComponente'].forEach(id=>{
