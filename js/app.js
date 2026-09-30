@@ -218,23 +218,62 @@ document.getElementById('btnBaixarPontos').addEventListener('click', ()=>{
 /* modal do formulário de novo ponto de atenção (substitui os prompt() encadeados) */
 function fecharModalPonto(){
   document.getElementById('modalPontoOverlay').hidden = true;
+  document.getElementById('modalPontoStatus').textContent = '';
   pontoPendente = null;
 }
+
+/* cadastro compartilhado (api/pontos.js, função serverless do Vercel): o painel pergunta
+   se está ligado; fora do Vercel ou sem configuração, a resposta falha ou vem "ativo:false"
+   e o modal segue no modo antigo (ponto só na sessão + baixar JSON). */
+let cadastroCompartilhado = false;
+async function verificarCadastroCompartilhado(){
+  try{
+    const resp = await fetch('api/pontos', { cache:'no-store' });
+    const info = resp.ok ? await resp.json() : null;
+    cadastroCompartilhado = Boolean(info && info.ativo);
+  }catch(e){ cadastroCompartilhado = false; }
+  document.getElementById('campoSenhaCuradoria').hidden = !cadastroCompartilhado;
+}
+verificarCadastroCompartilhado();
 document.getElementById('btnPontoCancelar').addEventListener('click', fecharModalPonto);
 document.getElementById('modalPontoOverlay').addEventListener('click', (e)=>{
   if(e.target.id === 'modalPontoOverlay') fecharModalPonto(); // clicar fora do card fecha, como o menu mobile
 });
-document.getElementById('btnPontoSalvar').addEventListener('click', ()=>{
+document.getElementById('btnPontoSalvar').addEventListener('click', async ()=>{
   if(!pontoPendente) return;
   const endereco = document.getElementById('inputPontoEndereco').value.trim();
   if(!endereco){ document.getElementById('inputPontoEndereco').focus(); return; }
-  PONTOS_ATENCAO.push({
+  const ponto = {
     ...pontoPendente,
     endereco,
     categoria: document.getElementById('selPontoCategoria').value,
     descricao: document.getElementById('inputPontoDescricao').value.trim(),
     fonte: document.getElementById('inputPontoFonte').value.trim(),
-  });
+  };
+  const status = document.getElementById('modalPontoStatus');
+  const senha = document.getElementById('inputPontoSenha').value;
+  const info = document.getElementById('pontosAtencaoInfo');
+
+  if(cadastroCompartilhado && senha){
+    const btn = document.getElementById('btnPontoSalvar');
+    btn.disabled = true; status.textContent = 'Publicando...';
+    try{
+      const resp = await fetch('api/pontos', {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ senha, ponto }),
+      });
+      const resultado = await resp.json().catch(()=>({}));
+      if(!resp.ok){ status.textContent = `Não publicado: ${resultado.erro || 'erro ' + resp.status}.`; return; } // modal fica aberto para corrigir
+      PONTOS_ATENCAO.push(resultado.ponto || ponto);
+      fecharModalPonto();
+      renderMapaGeo();
+      info.textContent = 'Ponto publicado. Ele aparece para os outros visitantes assim que o site for republicado (cerca de 1 minuto).';
+    }catch(e){
+      status.textContent = 'Sem conexão com o servidor — tente de novo ou salve sem senha (só nesta sessão).';
+    }finally{ btn.disabled = false; }
+    return;
+  }
+
+  PONTOS_ATENCAO.push(ponto);
   fecharModalPonto();
   renderMapaGeo();
   document.getElementById('btnBaixarPontos').style.display = '';

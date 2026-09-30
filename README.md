@@ -40,7 +40,10 @@ ser compartilhados e o botão "voltar" do navegador funciona.
 - `data/scripts/` — scripts de coleta e processamento dos dados.
 - `data/processed/` — dados tratados consumidos pela aplicação.
 - `docs/` — memorial descritivo, decisões de metodologia e notas para a dissertação.
-- `tests/` — testes do cálculo do índice, das estatísticas e da integridade dos dados.
+- `api/` — função serverless do Vercel para o cadastro compartilhado de pontos
+  de atenção (opcional; configuração em `data/processed/README.md`).
+- `tests/` — testes do cálculo do índice, das estatísticas, da integridade dos
+  dados e da API de pontos de atenção.
 
 ## Testes
 

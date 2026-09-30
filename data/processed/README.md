@@ -38,13 +38,22 @@ de novo para regenerar). Arquivos:
   geometria. Independente do restante do pipeline.
 - `pontos_atencao.json` — pontos específicos (endereço/local, não só o
   município inteiro) que precisam de obra de infraestrutura, plotados como
-  marcadores no mapa geográfico. **Curadoria manual da equipe de pesquisa,
-  não um cadastro público em tempo real** — o site é 100% estático, sem
-  banco de dados, então não há como um visitante gravar um ponto que outros
-  visitantes veriam. O painel tem um "modo curadoria" (Dashboard → mapa
-  geográfico) que deixa clicar no mapa, preencher endereço/categoria/
-  descrição e baixar o JSON atualizado — para o ponto valer pra todo mundo,
-  baixe o arquivo e substitua este aqui, depois publique (commit + push).
+  marcadores no mapa geográfico. **Curadoria da equipe de pesquisa** (não é
+  um cadastro aberto ao público). No "modo curadoria" (Dashboard → mapa
+  geográfico), clique no mapa e preencha endereço/categoria/descrição:
+  - **com a senha da curadoria** (cadastro compartilhado, se configurado): o
+    ponto é gravado neste arquivo direto no GitHub pela função
+    `api/pontos.js` (um commit por ponto) e o Vercel republica o site em ~1
+    minuto — aparece para todos, e o histórico fica no git;
+  - **sem senha / sem configuração**: o ponto fica só na sessão do navegador;
+    baixe o JSON atualizado, substitua este arquivo e publique (commit + push).
+
+  Para ligar o cadastro compartilhado, defina no Vercel (Project → Settings →
+  Environment Variables) e republique:
+  `CURADORIA_SENHA` (senha da equipe), `GITHUB_TOKEN` (token *fine-grained*
+  com permissão **Contents: Read and write** só neste repositório),
+  `GITHUB_REPO` (`matiasteixeira94/sanedata`) e, opcional, `GITHUB_BRANCH`
+  (padrão `main`). Sem elas o campo de senha nem aparece.
   Formato de cada item:
   ```json
   {
@@ -54,7 +63,8 @@ de novo para regenerar). Arquivos:
     "lon": -34.8829,
     "categoria": "agua | esgoto | residuos | outro",
     "descricao": "texto curto explicando a necessidade de obra",
-    "fonte": "quem registrou e quando (ex.: 'visita técnica, 2026-07-10')"
+    "fonte": "quem registrou e quando (ex.: 'visita técnica, 2026-07-10')",
+    "registradoEm": "2026-09-30T14:00:00.000Z  (só nos pontos gravados pela API)"
   }
   ```
   Vazio (`"pontos": []`) até a equipe de pesquisa cadastrar o primeiro ponto

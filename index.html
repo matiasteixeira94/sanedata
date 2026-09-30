@@ -66,6 +66,12 @@
         <label for="inputPontoFonte">Fonte (quem registrou e quando)</label>
         <input type="text" id="inputPontoFonte">
       </div>
+      <div class="field" id="campoSenhaCuradoria" style="margin-bottom:16px" hidden>
+        <label for="inputPontoSenha">Senha da curadoria</label>
+        <input type="password" id="inputPontoSenha" autocomplete="current-password">
+        <span class="hint">Com a senha, o ponto é publicado para todos os visitantes (aparece em ~1 minuto).</span>
+      </div>
+      <p class="modal-status" id="modalPontoStatus" role="status"></p>
       <div class="actions-row">
         <button class="btn-export" id="btnPontoCancelar" type="button">Cancelar</button>
         <button class="btn-export btn-export-primary" id="btnPontoSalvar" type="button">Salvar ponto</button>
@@ -358,7 +364,7 @@
             <button class="btn-export" id="btnModoCuradoria">📍 Modo curadoria: adicionar ponto de atenção</button>
             <button class="btn-export" id="btnBaixarPontos" style="display:none">Baixar pontos_atencao.json atualizado</button>
           </div>
-          <p class="scope-note" id="pontosAtencaoInfo">Pontos de atenção: locais específicos (não o município inteiro) que precisam de obra de infraestrutura. Curadoria manual da equipe de pesquisa — não é um cadastro público em tempo real (ver <code>data/processed/README.md</code>). Com o modo curadoria ativo, clique no mapa pra registrar um ponto nesta sessão; depois baixe o JSON atualizado e substitua <code>data/processed/pontos_atencao.json</code> no repositório pra publicar de vez.</p>
+          <p class="scope-note" id="pontosAtencaoInfo">Pontos de atenção: locais específicos (não o município inteiro) que precisam de obra de infraestrutura, cadastrados pela equipe de pesquisa. Com o modo curadoria ativo, clique no mapa para registrar um ponto. Com a senha da curadoria, o ponto é publicado para todos; sem ela, fica só nesta sessão — baixe o JSON atualizado e substitua <code>data/processed/pontos_atencao.json</code> no repositório para publicar.</p>
         </div>
       </div>
 
