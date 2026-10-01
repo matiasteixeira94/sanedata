@@ -54,6 +54,17 @@ de novo para regenerar). Arquivos:
   com permissão **Contents: Read and write** só neste repositório),
   `GITHUB_REPO` (`matiasteixeira94/sanedata`) e, opcional, `GITHUB_BRANCH`
   (padrão `main`). Sem elas o campo de senha nem aparece.
+
+  Segurança do cadastro: use como senha uma frase longa (4+ palavras
+  aleatórias) e, no Vercel (Project → Firewall), crie uma regra de *rate
+  limit* para `POST /api/pontos` (ex.: 10 requisições/minuto por IP) — a
+  função em si não limita tentativas.
+
+  **Dados pessoais (LGPD):** nunca registre nome, telefone ou outro dado de
+  morador em endereço, descrição ou fonte. Tudo o que entra aqui é público e
+  fica no histórico do git — remover do arquivo depois não apaga do histórico.
+  Em "fonte", identifique a origem (ex.: "visita técnica, 2026-07-10"), não
+  pessoas de fora da equipe.
   Formato de cada item:
   ```json
   {

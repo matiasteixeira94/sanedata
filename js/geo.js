@@ -22,7 +22,7 @@ let modoCuradoria = false;
 let mapaProjecaoAtual = null; // {box, largura, alturaContinente, padding} do último render, pro clique do modo curadoria
 
 async function carregarMalha(){
-  const resp = await fetch('data/processed/malha_municipios_pe.geojson', { cache:'no-store' });
+  const resp = await fetch('data/processed/malha_municipios_pe.geojson', { cache:'no-cache' });
   if(!resp.ok) throw new Error(`HTTP ${resp.status} ao buscar data/processed/malha_municipios_pe.geojson`);
   MALHA = await resp.json();
   malhaPorCodigo = new Map(MALHA.features.map(f => [Number(f.properties.codarea), f]));
@@ -30,7 +30,7 @@ async function carregarMalha(){
 
 async function carregarPontosAtencao(){
   try{
-    const resp = await fetch('data/processed/pontos_atencao.json', { cache:'no-store' });
+    const resp = await fetch('data/processed/pontos_atencao.json', { cache:'no-cache' });
     if(resp.ok){
       const payload = await resp.json();
       PONTOS_ATENCAO = Array.isArray(payload.pontos) ? payload.pontos : [];

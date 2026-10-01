@@ -174,7 +174,7 @@ function renderPerfil(){
   const ROTULO_CATEGORIA = { agua:'Água', esgoto:'Esgoto', residuos:'Resíduos', outro:'Outro' };
   pontosHost.innerHTML = pontos.length
     ? `<div class="table-scroll"><table class="tabela-relatorio"><thead><tr><th>Categoria</th><th>Endereço / local</th><th>Descrição</th><th>Fonte</th></tr></thead><tbody>` +
-      pontos.map(p=>`<tr><td>${ROTULO_CATEGORIA[p.categoria] || p.categoria || '—'}</td><td>${escaparHTML(p.endereco)}</td><td style="text-align:left; font-family:var(--font-body); white-space:normal">${escaparHTML(p.descricao) || '—'}</td><td style="text-align:left; font-family:var(--font-body)">${escaparHTML(p.fonte) || '—'}</td></tr>`).join('') +
+      pontos.map(p=>`<tr><td>${ROTULO_CATEGORIA[p.categoria] || escaparHTML(p.categoria) || '—'}</td><td>${escaparHTML(p.endereco)}</td><td style="text-align:left; font-family:var(--font-body); white-space:normal">${escaparHTML(p.descricao) || '—'}</td><td style="text-align:left; font-family:var(--font-body)">${escaparHTML(p.fonte) || '—'}</td></tr>`).join('') +
       `</tbody></table></div>`
     : `<p class="hint" style="display:block">Nenhum ponto de atenção registrado para ${m.nome} até o momento. Pontos são cadastrados pela equipe de pesquisa no mapa do Dashboard (modo curadoria).</p>`;
 }

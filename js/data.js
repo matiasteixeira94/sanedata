@@ -36,7 +36,7 @@ let state = { abaDashboard:'priorizacao', reguaTemporal:'ano', ano:null, indicad
 
 /* ============ CARREGAMENTO DOS DADOS REAIS ============ */
 async function carregarPainel(){
-  const resp = await fetch('data/processed/painel_pe.json', { cache:'no-store' });
+  const resp = await fetch('data/processed/painel_pe.json', { cache:'no-cache' });
   if(!resp.ok) throw new Error(`HTTP ${resp.status} ao buscar data/processed/painel_pe.json`);
   PAINEL = await resp.json();
   state.ano = anoPadrao();
