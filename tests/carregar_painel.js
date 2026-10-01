@@ -41,6 +41,7 @@ function carregarPainel({ painel } = {}){
   vm.runInContext(codigo + `
     ;globalThis.__painel = {
       definirPainel: (p) => { PAINEL = p; limparCachesPainel(); state.ano = anoPadrao(); },
+      definirPontos: (p) => { PONTOS_ATENCAO = p; },
       state, getDataset, indiceCompletoCache, indiceReguaFixaCache, reguaFixaDaSerie, valorIndicador,
       computeIndex, computeWeights, buildMatrix, rank, rankDesc, spearman, quantil, media, minMax,
       simularIndice, estatisticaPorAno, renderPerfil, document, INDICADORES_INDICE, CHAVE_INDICE_FIXO, CHAVE_INVESTIMENTO_TOTAL,

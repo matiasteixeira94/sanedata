@@ -149,3 +149,18 @@ test('resumo executivo do Perfil: gera texto com e sem índice calculável, sem 
     assert.ok(!/NaN|undefined|null/.test(texto), `valor inválido no resumo de ${codigo}`);
   }
 });
+
+test('pontos de atenção no Perfil: todo texto do JSON sai escapado (inclusive categoria fora da lista)', () => {
+  const ataque = '<img src=x onerror=alert(1)>';
+  P.definirPontos([{ codigo_ibge: 2611606, lat: -8.05, lon: -34.88, categoria: ataque, endereco: ataque, descricao: ataque, fonte: ataque }]);
+  try {
+    P.state.ano = '2023';
+    P.state.municipioIdx = P.getDataset('2023').findIndex(m => m.codigo === 2611606);
+    P.renderPerfil();
+    const html = P.document.getElementById('perfilPontos').innerHTML;
+    assert.ok(html.includes('&lt;img'), 'ponto não apareceu escapado na tabela');
+    assert.ok(!html.includes('<img'), 'HTML do ponto foi inserido sem escapar');
+  } finally {
+    P.definirPontos([]);
+  }
+});

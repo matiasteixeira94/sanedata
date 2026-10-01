@@ -24,16 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
-<script>
-  /* tema antes do primeiro desenho da página (sem "piscar" claro): escolha salva pelo
-     usuário ou, na falta dela, o tema do sistema operacional */
-  (function(){
-    var tema = null;
-    try{ tema = localStorage.getItem('sanedata-tema'); }catch(e){}
-    if(tema !== 'light' && tema !== 'dark') tema = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', tema);
-  })();
-</script>
+<script src="js/tema.js"></script>
 </head>
 <body>
 <div class="app">
@@ -71,6 +62,7 @@
         <input type="password" id="inputPontoSenha" autocomplete="current-password">
         <span class="hint">Com a senha, o ponto é publicado para todos os visitantes (aparece em ~1 minuto).</span>
       </div>
+      <p class="hint" style="display:block; margin-bottom:12px"><strong>Não inclua nomes, telefones ou outros dados de moradores.</strong> O ponto fica público no site e no histórico do repositório, e não dá para apagá-lo de lá depois.</p>
       <p class="modal-status" id="modalPontoStatus" role="status"></p>
       <div class="actions-row">
         <button class="btn-export" id="btnPontoCancelar" type="button">Cancelar</button>
