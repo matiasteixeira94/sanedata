@@ -6,7 +6,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 const RAIZ = path.resolve(__dirname, '..');
-const SCRIPTS = ['data','stats','render','geo','export','series','perfil','metodologia','simulador'];
+const SCRIPTS = ['data','stats','render','render_inicio','render_dashboard','render_relatorios','render_comparacoes','geo','export','series','perfil','metodologia','simulador'];
 
 function elementoFalso(){
   return {
